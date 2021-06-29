@@ -1,4 +1,4 @@
-package molinov.materialnasa.ui.main
+package molinov.pictureoftheday.viewmodel
 
 import androidx.lifecycle.ViewModel
 

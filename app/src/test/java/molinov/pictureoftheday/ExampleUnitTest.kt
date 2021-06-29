@@ -1,4 +1,4 @@
-package molinov.materialnasa
+package molinov.pictureoftheday
 
 import org.junit.Test
 

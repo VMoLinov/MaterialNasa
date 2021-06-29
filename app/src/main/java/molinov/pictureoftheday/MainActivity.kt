@@ -1,8 +1,9 @@
-package molinov.materialnasa
+package molinov.pictureoftheday
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import molinov.materialnasa.ui.main.MainFragment
+import molinov.pictureoftheday.main.MainFragment
+import molinov.pictureoftheday.picture.PictureOfTheDayFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -11,7 +12,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.main_activity)
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.container, MainFragment.newInstance())
+                .replace(R.id.container, PictureOfTheDayFragment()) //Why not fabric method worked?
                 .commitNow()
         }
     }

@@ -1,4 +1,4 @@
-package molinov.materialnasa.ui.main
+package molinov.pictureoftheday.main
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -6,7 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import molinov.materialnasa.R
+import molinov.pictureoftheday.R
+import molinov.pictureoftheday.viewmodel.MainViewModel
 
 class MainFragment : Fragment() {
 
