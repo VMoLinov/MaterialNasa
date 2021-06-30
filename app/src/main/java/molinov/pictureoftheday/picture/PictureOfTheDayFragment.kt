@@ -12,10 +12,14 @@ import androidx.lifecycle.ViewModelProvider
 import coil.api.load
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.chip.Chip
 import molinov.pictureoftheday.MainActivity
 import molinov.pictureoftheday.R
 import molinov.pictureoftheday.chips.ChipsFragment
 import molinov.pictureoftheday.databinding.MainFragmentBinding
+import molinov.pictureoftheday.util.BEFORE_YESTERDAY
+import molinov.pictureoftheday.util.TODAY
+import molinov.pictureoftheday.util.YESTERDAY
 
 class PictureOfTheDayFragment : Fragment() {
 
@@ -45,13 +49,28 @@ class PictureOfTheDayFragment : Fragment() {
         }
         setBottomSheetBehavior(view.findViewById(R.id.bottom_sheet_container))
         setBottomAppBar(view)
+        binding.chipGroup.findViewById<Chip>(R.id.today).isCheckable = true // ???
+        binding.chipGroup.setOnCheckedChangeListener { _, checkedId ->
+            when (checkedId) {
+                R.id.before_yesterday -> {
+                    viewModel.getData(BEFORE_YESTERDAY)
+                        .observe(viewLifecycleOwner, { renderData(it) })
+                }
+                R.id.yesterday -> {
+                    viewModel.getData(YESTERDAY).observe(viewLifecycleOwner, { renderData(it) })
+                }
+                R.id.today -> {
+                    viewModel.getData(TODAY).observe(viewLifecycleOwner, { renderData(it) })
+                }
+            }
+        }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel.getData()
-            .observe(this@PictureOfTheDayFragment, { renderData(it) })
-    }
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+//        viewModel.getData()
+//            .observe(this@PictureOfTheDayFragment, { renderData(it) })
+//    }
 
     private fun renderData(data: PictureOfTheDayData) {
         when (data) {

@@ -34,4 +34,7 @@
     <string name="horizontal">horizontal</string>
     <string name="scroll">scroll</string>
     <string name="close_icon_listener">Close Icon Listener</string>
+    <string name="before_yesterday">Позавчера</string>
+    <string name="yesterday">Вчера</string>
+    <string name="today">Сегодня</string>
 </resources>
