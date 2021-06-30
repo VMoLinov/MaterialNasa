@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.*
 import android.widget.Toast
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.navigation.NavigationView
 import molinov.pictureoftheday.R
 import molinov.pictureoftheday.databinding.BottomNavigationLayoutBinding
 
@@ -21,8 +22,8 @@ class BottomNavigationDrawerFragment : BottomSheetDialogFragment() {
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         binding.navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.navigation_one -> Toast.makeText(context, "1", Toast.LENGTH_SHORT).show()
