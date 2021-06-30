@@ -1,10 +1,11 @@
-package molinov.pictureoftheday.navigation
+package molinov.pictureoftheday.picture
 
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.google.android.material.navigation.NavigationView
 import molinov.pictureoftheday.R
 import molinov.pictureoftheday.databinding.BottomNavigationLayoutBinding
 
@@ -22,12 +23,18 @@ class BottomNavigationDrawerFragment : BottomSheetDialogFragment() {
         return binding.root
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.navigation_one -> Toast.makeText(context, "1", Toast.LENGTH_SHORT).show()
-                R.id.navigation_two -> Toast.makeText(context, "2", Toast.LENGTH_SHORT).show()
+                R.id.navigation_one -> {
+                    Toast.makeText(context, "1", Toast.LENGTH_SHORT).show()
+                    dismiss()
+                }
+                R.id.navigation_two -> {
+                    Toast.makeText(context, "2", Toast.LENGTH_SHORT).show()
+                    dismiss()
+                }
             }
             true
         }
@@ -36,5 +43,9 @@ class BottomNavigationDrawerFragment : BottomSheetDialogFragment() {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+    companion object {
+        fun newInstance() = BottomNavigationDrawerFragment()
     }
 }

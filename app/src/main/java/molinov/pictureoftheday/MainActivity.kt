@@ -1,8 +1,7 @@
 package molinov.pictureoftheday
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import molinov.pictureoftheday.main.MainFragment
+import androidx.appcompat.app.AppCompatActivity
 import molinov.pictureoftheday.picture.PictureOfTheDayFragment
 
 class MainActivity : AppCompatActivity() {
@@ -12,7 +11,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.main_activity)
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.container, PictureOfTheDayFragment()) //Why not fabric method worked?
+                .replace(
+                    R.id.container,
+                    PictureOfTheDayFragment.newInstance()
+                ) //Why not fabric method is worked? PictureOfTheDayFragment()
                 .commitNow()
         }
     }

@@ -1,4 +1,4 @@
-package molinov.pictureoftheday.main
+package molinov.pictureoftheday.util
 
 import android.content.Context
 import android.util.AttributeSet

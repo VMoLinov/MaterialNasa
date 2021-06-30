@@ -16,8 +16,6 @@ import molinov.pictureoftheday.MainActivity
 import molinov.pictureoftheday.R
 import molinov.pictureoftheday.chips.ChipsFragment
 import molinov.pictureoftheday.databinding.MainFragmentBinding
-import molinov.pictureoftheday.navigation.BottomNavigationDrawerFragment
-import molinov.pictureoftheday.viewmodel.PictureOfTheDayViewModel
 
 class PictureOfTheDayFragment : Fragment() {
 
@@ -59,7 +57,7 @@ class PictureOfTheDayFragment : Fragment() {
         when (data) {
             is PictureOfTheDayData.Success -> {
                 val serverResponseData = data.serverResponseData
-                val url = serverResponseData.url
+                val url = serverResponseData[0].url
                 if (url.isNullOrEmpty()) {
 //                    showError()
                 } else {
@@ -113,13 +111,14 @@ class PictureOfTheDayFragment : Fragment() {
             R.id.app_bar_settings -> {
                 parentFragmentManager
                     .beginTransaction()
-                    .replace(R.id.container, ChipsFragment())
+                    .replace(R.id.container, ChipsFragment.newInstance())
                     .addToBackStack(null)
                     .commit()
             }
-            R.id.home -> {
+            android.R.id.home -> {
                 activity?.let {
-                    BottomNavigationDrawerFragment().show(it.supportFragmentManager, "tag")
+                    BottomNavigationDrawerFragment.newInstance()
+                        .show(parentFragmentManager, "tag")
                 }
             }
         }
@@ -162,5 +161,6 @@ class PictureOfTheDayFragment : Fragment() {
 
     companion object {
         private var isMain = true
+        fun newInstance() = PictureOfTheDayFragment()
     }
 }
