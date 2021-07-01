@@ -1,2 +1,2 @@
-rootProject.name = "materialnasa"
+rootProject.name = "PictureOfTheDay"
 include ':app'
