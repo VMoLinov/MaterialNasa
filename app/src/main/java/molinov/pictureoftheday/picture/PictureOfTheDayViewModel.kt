@@ -5,12 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import molinov.pictureoftheday.BuildConfig
 import molinov.pictureoftheday.util.BEFORE_YESTERDAY
-import molinov.pictureoftheday.util.TODAY
 import molinov.pictureoftheday.util.YESTERDAY
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.lang.StringBuilder
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -28,7 +26,7 @@ class PictureOfTheDayViewModel(
         liveDataForViewToObserve.value = PictureOfTheDayData.Loading(null)
         val apiKey: String = BuildConfig.NASA_API_KEY
         val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-        val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
+        val calendar = Calendar.getInstance()
         calendar.timeInMillis = System.currentTimeMillis()
         val date: String = when (inputDate) {
             YESTERDAY -> {
@@ -45,15 +43,14 @@ class PictureOfTheDayViewModel(
             PictureOfTheDayData.Error(Throwable("You need API Key"))
         } else {
             retrofitImpl.getRetrofitImpl().getPictureOfTheDay(date, apiKey).enqueue(object :
-                Callback<List<PODServerResponseData>> {
+                Callback<PODServerResponseData> {
                 override fun onResponse(
-                    call: Call<List<PODServerResponseData>>,
-                    response: Response<List<PODServerResponseData>>
+                    call: Call<PODServerResponseData>,
+                    response: Response<PODServerResponseData>
                 ) {
-                    val responseTest: List<PODServerResponseData> = response.body()!!
                     if (response.isSuccessful && response.body() != null) {
                         liveDataForViewToObserve.value =
-                            PictureOfTheDayData.Success(responseTest)
+                            PictureOfTheDayData.Success(response.body()!!)
                     } else {
                         val message = response.message()
                         if (message.isNullOrEmpty()) {
@@ -66,7 +63,7 @@ class PictureOfTheDayViewModel(
                     }
                 }
 
-                override fun onFailure(call: Call<List<PODServerResponseData>>, t: Throwable) {
+                override fun onFailure(call: Call<PODServerResponseData>, t: Throwable) {
                     liveDataForViewToObserve.value = PictureOfTheDayData.Error(t)
                 }
             })

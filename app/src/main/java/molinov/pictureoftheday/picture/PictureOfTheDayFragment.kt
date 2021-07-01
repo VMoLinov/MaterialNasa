@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.*
+import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -50,6 +51,7 @@ class PictureOfTheDayFragment : Fragment() {
         setBottomSheetBehavior(view.findViewById(R.id.bottom_sheet_container))
         setBottomAppBar(view)
         binding.chipGroup.findViewById<Chip>(R.id.today).isCheckable = true // ???
+        viewModel.getData(TODAY).observe(viewLifecycleOwner, { renderData(it) })
         binding.chipGroup.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
                 R.id.before_yesterday -> {
@@ -66,17 +68,11 @@ class PictureOfTheDayFragment : Fragment() {
         }
     }
 
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        viewModel.getData()
-//            .observe(this@PictureOfTheDayFragment, { renderData(it) })
-//    }
-
     private fun renderData(data: PictureOfTheDayData) {
         when (data) {
             is PictureOfTheDayData.Success -> {
                 val serverResponseData = data.serverResponseData
-                val url = serverResponseData[0].url
+                val url = serverResponseData.url
                 if (url.isNullOrEmpty()) {
 //                    showError()
                 } else {
@@ -86,6 +82,10 @@ class PictureOfTheDayFragment : Fragment() {
                         error(R.drawable.ic_load_error_vector)
                         placeholder(R.drawable.ic_no_photo_vector)
                     }
+                    setBottomSheetData(
+                        view?.findViewById(R.id.bottom_sheet_container),
+                        serverResponseData
+                    )
                 }
             }
             is PictureOfTheDayData.Loading -> {
@@ -94,6 +94,17 @@ class PictureOfTheDayFragment : Fragment() {
             is PictureOfTheDayData.Error -> {
 //                showError()
             }
+        }
+    }
+
+    private fun setBottomSheetData(
+        bottomSheet: ConstraintLayout?, serverResponseData: PODServerResponseData
+    ) {
+        if (bottomSheet != null) {
+            bottomSheet.findViewById<TextView>(R.id.bottom_sheet_description_header).text =
+                serverResponseData.title
+            bottomSheet.findViewById<TextView>(R.id.bottom_sheet_description).text =
+                serverResponseData.explanation
         }
     }
 

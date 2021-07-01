@@ -7,6 +7,7 @@ import androidx.appcompat.widget.AppCompatImageView
 const val BEFORE_YESTERDAY = "BEFORE_YESTERDAY"
 const val YESTERDAY = "YESTERDAY"
 const val TODAY = "TODAY"
+const val RANDOM = "TODAY"
 
 class EquilateralImageView @JvmOverloads constructor(
     context: Context,
