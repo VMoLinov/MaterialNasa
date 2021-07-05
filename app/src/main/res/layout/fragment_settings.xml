@@ -89,28 +89,24 @@
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/one"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/one" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/two"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/two" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/three"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/three" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/four"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/four" />

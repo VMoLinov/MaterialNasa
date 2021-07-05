@@ -24,7 +24,6 @@
     </style>
 
     <style name="BottomAppBar" parent="Widget.MaterialComponents.BottomAppBar">
-        <item name="colorSurface">@color/primaryDarkColor</item>
-        <item name="backgroundTint">@color/primaryDarkColor</item>
+        <item name="backgroundTint">?attr/colorPrimaryVariant</item>
     </style>
 </resources>

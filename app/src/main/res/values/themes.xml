@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="App.POD1" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <!-- Customize your theme here. -->
+    <style name="App" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/primaryColor</item>
         <item name="colorPrimaryVariant">@color/primaryLightColor</item>
         <item name="colorOnPrimary">#FFFFFF</item>
@@ -17,76 +16,36 @@
         <item name="colorOnBackground">#212121</item>
         <item name="fontFamily">@font/coming_soon</item>
         <item name="android:fontFamily">@font/coming_soon</item>
-        <item name="shapeAppearanceSmallComponent">@style/AppShapeAppearance.SmallComponent</item>
-        <item name="shapeAppearanceMediumComponent">@style/AppShapeAppearance.MediumComponent</item>
         <item name="textAppearanceButton">@style/AppTextAppearance.Button</item>
         <item name="materialButtonStyle">@style/AppButton</item>
         <item name="bottomAppBarStyle">@style/BottomAppBar</item>
         <item name="textInputStyle">@style/AppTextField</item>
+        <item name="chipStyle">@style/Widget.MaterialComponents.Chip.Choice</item>
     </style>
 
-    <style name="App.POD2" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryVariant">@color/colorPrimaryDark</item>
-        <item name="colorOnPrimary">#FFFFFF</item>
-        <item name="colorSecondary">@color/colorAccent</item>
-        <item name="colorSecondaryVariant">#0039CB</item>
-        <item name="colorOnSecondary">#FFFFFF</item>
-        <item name="colorError">#F44336</item>
-        <item name="colorOnError">#FFFFFF</item>
-        <item name="colorSurface">#FFFFFF</item>
-        <item name="colorOnSurface">#212121</item>
-        <item name="android:colorBackground">@color/background</item>
-        <item name="colorOnBackground">#212121</item>
-        <item name="fontFamily">@font/coming_soon</item>
-        <item name="android:fontFamily">@font/coming_soon</item>
+    <style name="App.POD1">
         <item name="shapeAppearanceSmallComponent">@style/AppShapeAppearance.SmallComponent</item>
         <item name="shapeAppearanceMediumComponent">@style/AppShapeAppearance.MediumComponent</item>
-        <item name="textAppearanceButton">@style/AppTextAppearance.Button</item>
-        <item name="materialButtonStyle">@style/AppButton</item>
-        <item name="textInputStyle">@style/AppTextField</item>
     </style>
 
-    <style name="App.POD3" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <!-- Customize your theme here. -->
+    <style name="App.POD2">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryVariant">@color/colorPrimaryDark</item>
-        <item name="colorOnPrimary">#FFFFFF</item>
         <item name="colorSecondary">@color/colorAccent</item>
         <item name="colorSecondaryVariant">#0039CB</item>
-        <item name="colorOnSecondary">#FFFFFF</item>
-        <item name="colorError">#F44336</item>
-        <item name="colorOnError">#FFFFFF</item>
-        <item name="colorSurface">#FFFFFF</item>
-        <item name="colorOnSurface">#212121</item>
-        <item name="android:colorBackground">@color/background</item>
-        <item name="colorOnBackground">#212121</item>
-        <item name="fontFamily">@font/coming_soon</item>
-        <item name="android:fontFamily">@font/coming_soon</item>
-        <item name="textAppearanceButton">@style/AppTextAppearance.Button</item>
-        <item name="materialButtonStyle">@style/AppButton</item>
-        <item name="textInputStyle">@style/AppTextField</item>
+        <item name="shapeAppearanceSmallComponent">@style/AppShapeAppearance.SmallComponent</item>
+        <item name="shapeAppearanceMediumComponent">@style/AppShapeAppearance.MediumComponent</item>
     </style>
 
-    <style name="App.POD4" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/primaryColor</item>
-        <item name="colorPrimaryVariant">@color/primaryLightColor</item>
-        <item name="colorOnPrimary">#FFFFFF</item>
-        <item name="colorSecondary">@color/secondaryColor</item>
-        <item name="colorSecondaryVariant">@color/secondaryLightColor</item>
-        <item name="colorOnSecondary">#FFFFFF</item>
-        <item name="colorError">#F44336</item>
-        <item name="colorOnError">#FFFFFF</item>
-        <item name="colorSurface">#FFFFFF</item>
-        <item name="colorOnSurface">#212121</item>
-        <item name="android:colorBackground">@color/background</item>
-        <item name="colorOnBackground">#212121</item>
-        <item name="fontFamily">@font/coming_soon</item>
-        <item name="android:fontFamily">@font/coming_soon</item>
-        <item name="textAppearanceButton">@style/AppTextAppearance.Button</item>
-        <item name="materialButtonStyle">@style/AppButton</item>
-        <item name="textInputStyle">@style/AppTextField</item>
+    <style name="App.POD3">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryDark</item>
+        <item name="colorSecondary">@color/colorAccent</item>
+        <item name="colorSecondaryVariant">#0039CB</item>
+    </style>
+
+    <style name="App.POD4">
+        <item name="fontFamily">@font/acme</item>
+        <item name="android:fontFamily">@font/acme</item>
     </style>
 </resources>
