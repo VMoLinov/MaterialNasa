@@ -23,8 +23,8 @@
         <item name="boxBackgroundColor">@color/text_field_background</item>
     </style>
 
-    <style name="Widget.App.BottomAppBar" parent="Widget.MaterialComponents.BottomAppBar">
-        <item name="colorPrimary">@color/primaryColor</item>
-        <item name="colorSecondary">@color/secondaryColor</item>
+    <style name="BottomAppBar" parent="Widget.MaterialComponents.BottomAppBar">
+        <item name="colorSurface">@color/primaryDarkColor</item>
+        <item name="backgroundTint">@color/primaryDarkColor</item>
     </style>
 </resources>

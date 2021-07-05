@@ -21,7 +21,7 @@
         <item name="shapeAppearanceMediumComponent">@style/AppShapeAppearance.MediumComponent</item>
         <item name="textAppearanceButton">@style/AppTextAppearance.Button</item>
         <item name="materialButtonStyle">@style/AppButton</item>
-        <item name="bottomAppBarStyle">@style/Widget.App.BottomAppBar</item>
+        <item name="bottomAppBarStyle">@style/BottomAppBar</item>
         <item name="textInputStyle">@style/AppTextField</item>
     </style>
 
