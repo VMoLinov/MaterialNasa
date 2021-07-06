@@ -2,15 +2,18 @@ package molinov.pictureoftheday.api
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 
 class ViewPagerAdapter(
-    private val fragmentActivity: FragmentActivity,
+    private val fragmentManager: FragmentManager,
+    private val lifecycle: Lifecycle
 ) :
-    FragmentStateAdapter(fragmentActivity) {
+    FragmentStateAdapter(fragmentManager, lifecycle) {
 
     override fun getItemCount(): Int {
-        return 3
+        return FRAGMENTS
     }
 
     override fun createFragment(position: Int): Fragment {
@@ -20,5 +23,9 @@ class ViewPagerAdapter(
             2 -> WeatherFragment()
             else -> EarthFragment()
         }
+    }
+
+    companion object {
+        const val FRAGMENTS = 3
     }
 }
