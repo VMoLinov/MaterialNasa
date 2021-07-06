@@ -4,15 +4,15 @@ import android.os.Bundle
 import android.os.PersistableBundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
-import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.widget.ViewPager2
 import molinov.pictureoftheday.R
 
 class ApiActivity : AppCompatActivity() {
 
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_api)
-        val viewPagerAdapter = ViewPagerAdapter(supportFragmentManager, lifecycle)
-        findViewById<ViewPager>(R.id.view_pager).adapter = viewPagerAdapter
+        findViewById<ViewPager2>(R.id.view_pager).adapter =
+            ViewPagerAdapter(FragmentActivity())
     }
 }

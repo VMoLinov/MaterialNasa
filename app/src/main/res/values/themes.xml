@@ -48,4 +48,13 @@
         <item name="fontFamily">@font/acme</item>
         <item name="android:fontFamily">@font/acme</item>
     </style>
+
+    <style name="App.POD1.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="App.POD1.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="App.POD1.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
