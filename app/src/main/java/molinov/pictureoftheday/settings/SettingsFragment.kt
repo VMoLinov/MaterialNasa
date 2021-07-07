@@ -4,12 +4,10 @@ import android.content.Context.MODE_PRIVATE
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.TEXT_ALIGNMENT_VIEW_START
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.android.material.chip.Chip
-import com.google.android.material.tabs.TabItem
 import molinov.pictureoftheday.R
 import molinov.pictureoftheday.databinding.FragmentSettingsBinding
 import molinov.pictureoftheday.util.THEME

@@ -1,21 +1,33 @@
 package molinov.pictureoftheday.api
 
 import android.os.Bundle
-import android.os.PersistableBundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentActivity
-import androidx.viewpager2.widget.ViewPager2
-import me.relex.circleindicator.CircleIndicator3
+import com.google.android.material.tabs.TabLayoutMediator
 import molinov.pictureoftheday.R
+import molinov.pictureoftheday.databinding.ActivityApiBinding
 
 class ApiActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityApiBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_api)
-        val viewPager = findViewById<ViewPager2>(R.id.view_pager)
-        viewPager.adapter = ViewPagerAdapter(supportFragmentManager, lifecycle)
-        val indicator = findViewById<CircleIndicator3>(R.id.indicator)
-        indicator.setViewPager(viewPager)
+        binding = ActivityApiBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        binding.apply {
+            viewPager.adapter = ViewPagerAdapter(supportFragmentManager, lifecycle)
+            indicator.setViewPager(viewPager)
+            TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+                tab.text = when (position) {
+                    0 -> "EARTH"
+                    1 -> "MARS"
+                    2 -> "SYSTEM"
+                    else -> "EARTH"
+                }
+            }.attach()
+            tabLayout.getTabAt(0)?.setIcon(R.drawable.ic_earth)
+            tabLayout.getTabAt(1)?.setIcon(R.drawable.ic_mars)
+            tabLayout.getTabAt(2)?.setIcon(R.drawable.ic_system)
+        }
     }
 }
