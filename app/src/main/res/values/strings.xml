@@ -11,6 +11,9 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="fab_btn">fab_btn</string>
     <string name="defaultChip">Default</string>
+    <string name="before_yesterday">Позавчера</string>
+    <string name="yesterday">Вчера</string>
+    <string name="today">Сегодня</string>
     <string name="entry">Entry</string>
     <string name="choice">Choice</string>
     <string name="action">Action</string>
@@ -34,7 +37,21 @@
     <string name="horizontal">horizontal</string>
     <string name="scroll">scroll</string>
     <string name="close_icon_listener">Close Icon Listener</string>
-    <string name="before_yesterday">Позавчера</string>
-    <string name="yesterday">Вчера</string>
-    <string name="today">Сегодня</string>
+    <string name="raised_button">Raised Button</string>
+    <string name="unelevated_button">Unelevated Button</string>
+    <string name="outlined_button">Outlined Button</string>
+    <string name="text_button">Text Button</string>
+    <string name="checkbox">Checkbox</string>
+    <string name="radio_button">Radio Button</string>
+    <string name="switch_material">Switch</string>
+    <string name="filled_box_text_field">Filled Box Text Field</string>
+    <string name="outlined_box_text_field">Outlined Box Text Field</string>
+    <string name="text">Text</string>
+    <string name="tab_1">Tab 1</string>
+    <string name="tab_2">Tab 2</string>
+    <string name="tab_3">Tab 3</string>
+    <string name="card">Card</string>
+    <string name="three">Three</string>
+    <string name="four">Four</string>
+    <string name="choice_theme">Choice theme</string>
 </resources>

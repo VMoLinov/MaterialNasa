@@ -16,7 +16,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.chip.Chip
 import molinov.pictureoftheday.MainActivity
 import molinov.pictureoftheday.R
-import molinov.pictureoftheday.chips.ChipsFragment
+import molinov.pictureoftheday.settings.SettingsFragment
 import molinov.pictureoftheday.databinding.MainFragmentBinding
 import molinov.pictureoftheday.util.BEFORE_YESTERDAY
 import molinov.pictureoftheday.util.TODAY
@@ -141,7 +141,7 @@ class PictureOfTheDayFragment : Fragment() {
             R.id.app_bar_settings -> {
                 parentFragmentManager
                     .beginTransaction()
-                    .replace(R.id.container, ChipsFragment.newInstance())
+                    .replace(R.id.container, SettingsFragment.newInstance())
                     .addToBackStack(null)
                     .commit()
             }
