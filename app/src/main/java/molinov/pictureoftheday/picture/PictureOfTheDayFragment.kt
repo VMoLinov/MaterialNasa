@@ -5,7 +5,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.*
 import android.widget.TextView
-import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -17,6 +16,7 @@ import com.google.android.material.chip.Chip
 import molinov.pictureoftheday.MainActivity
 import molinov.pictureoftheday.R
 import molinov.pictureoftheday.api.ApiActivity
+import molinov.pictureoftheday.api.ApiBottomActivity
 import molinov.pictureoftheday.databinding.MainFragmentBinding
 import molinov.pictureoftheday.settings.SettingsFragment
 import molinov.pictureoftheday.util.BEFORE_YESTERDAY
@@ -138,7 +138,9 @@ class PictureOfTheDayFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.app_bar_fav -> Toast.makeText(context, "Favorite", Toast.LENGTH_SHORT).show()
+            R.id.app_bar_fav -> {
+                activity?.let { startActivity(Intent(it, ApiBottomActivity::class.java)) }
+            }
             R.id.app_bar_settings -> {
                 parentFragmentManager
                     .beginTransaction()
