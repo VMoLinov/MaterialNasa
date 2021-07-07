@@ -7,6 +7,7 @@
     tools:context=".api.ApiActivity">
 
     <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tab_image_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:drawableTop="@drawable/ic_mars"
