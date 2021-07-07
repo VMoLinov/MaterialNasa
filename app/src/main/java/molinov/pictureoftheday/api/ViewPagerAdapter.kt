@@ -1,7 +1,6 @@
 package molinov.pictureoftheday.api
 
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
@@ -9,8 +8,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 class ViewPagerAdapter(
     private val fragmentManager: FragmentManager,
     private val lifecycle: Lifecycle
-) :
-    FragmentStateAdapter(fragmentManager, lifecycle) {
+) : FragmentStateAdapter(fragmentManager, lifecycle) {
 
     override fun getItemCount(): Int {
         return FRAGMENTS
