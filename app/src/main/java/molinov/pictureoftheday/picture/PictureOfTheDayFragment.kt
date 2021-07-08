@@ -11,8 +11,13 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.tabs.TabLayoutMediator
 import molinov.pictureoftheday.R
-import molinov.pictureoftheday.api.*
 import molinov.pictureoftheday.databinding.MainFragmentBinding
+import molinov.pictureoftheday.settings.SettingsFragment
+import molinov.pictureoftheday.util.BEFORE_YESTERDAY
+import molinov.pictureoftheday.util.TODAY
+import molinov.pictureoftheday.util.YESTERDAY
+import molinov.pictureoftheday.viewpager.ViewPagerAdapter
+import molinov.pictureoftheday.viewpager.ViewPagerItems
 
 class PictureOfTheDayFragment : Fragment() {
 
@@ -21,9 +26,6 @@ class PictureOfTheDayFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: PictureOfTheDayViewModel by lazy {
         ViewModelProvider(this).get(PictureOfTheDayViewModel::class.java)
-    }
-    private val adapter: ViewPagerAdapter by lazy {
-        ViewPagerAdapter(this@PictureOfTheDayFragment)
     }
 
     override fun onCreateView(
@@ -62,6 +64,24 @@ class PictureOfTheDayFragment : Fragment() {
 //            }
 //        }
         setTableLayout()
+        binding.bottomNavigationView.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.bottom_view_settings -> {
+                    parentFragmentManager.beginTransaction()
+                        .replace(R.id.container, SettingsFragment.newInstance())
+                        .addToBackStack(null)
+                        .commit()
+                    true
+                }
+                R.id.bottom_view_mars -> {
+                    true
+                }
+                R.id.bottom_view_weather -> {
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
     private fun setTableLayout() {
@@ -78,52 +98,15 @@ class PictureOfTheDayFragment : Fragment() {
             viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     when (position) {
-                        1 -> {
-                            MarsFragment()
-                        }
-                        2 -> {
-                            WeatherFragment()
-                        }
-                        else -> {
-                            EarthFragment()
-                        }
+                        1 -> ViewPagerItems(YESTERDAY)
+                        2 -> ViewPagerItems(TODAY)
+                        else -> ViewPagerItems(BEFORE_YESTERDAY)
                     }
                 }
             })
         }
     }
 
-    private fun renderData(data: PictureOfTheDayData) {
-        when (data) {
-            is PictureOfTheDayData.Success -> {
-                val serverResponseData = data.serverResponseData
-                val url = serverResponseData.url
-                if (url.isNullOrEmpty()) {
-//                    showError()
-                } else {
-//                    val bundle = Bundle()
-//                    bundle.putString("KEY", url)
-//                    EarthFragment().arguments = bundle
-//                    adapter.createFragment(0)
-//                    showSuccess()
-//                    binding.imageView.load(url) {
-//                        lifecycle(this@PictureOfTheDayFragment)
-//                        error(R.drawable.ic_load_error_vector)
-//                        placeholder(R.drawable.ic_no_photo_vector)
-                }
-//                    setBottomSheetData(
-//                        view?.findViewById(R.id.bottom_sheet_container),
-//                        serverResponseData
-//                    )
-            }
-            is PictureOfTheDayData.Loading -> {
-//                showLoading()
-            }
-            is PictureOfTheDayData.Error -> {
-//                showError()
-            }
-        }
-    }
 
 //    private fun setBottomSheetData(
 //        bottomSheet: ConstraintLayout?, serverResponseData: PODServerResponseData

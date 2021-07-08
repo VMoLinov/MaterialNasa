@@ -1,19 +1,20 @@
-package molinov.pictureoftheday.api
+package molinov.pictureoftheday.viewpager
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
+import android.widget.VideoView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import coil.api.load
 import molinov.pictureoftheday.R
 import molinov.pictureoftheday.picture.PictureOfTheDayData
 import molinov.pictureoftheday.picture.PictureOfTheDayViewModel
-import molinov.pictureoftheday.util.BEFORE_YESTERDAY
 
-class EarthFragment : Fragment() {
+class ViewPagerItems(private val DAY: String) : Fragment() {
 
     private val viewModel: PictureOfTheDayViewModel by lazy {
         ViewModelProvider(this).get(PictureOfTheDayViewModel::class.java)
@@ -24,12 +25,12 @@ class EarthFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_earth, container, false)
+        return inflater.inflate(R.layout.fragment_view_pager_item, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getData(BEFORE_YESTERDAY)
+        viewModel.getData(DAY)
             .observe(viewLifecycleOwner, { renderData(it) })
     }
 
@@ -41,7 +42,20 @@ class EarthFragment : Fragment() {
                 if (url.isNullOrEmpty()) {
 
                 } else {
-                    this.view?.findViewById<ImageView>(R.id.image_view)?.load(url)
+                    this.view?.apply {
+                        val imageView = findViewById<ImageView>(R.id.image_view)
+                        if (serverResponseData.mediaType != "image") {
+                            val videoView = findViewById<VideoView>(R.id.video_view)
+//                            videoView.setVideoURI(Uri.parse(url))
+                            imageView.visibility = View.GONE
+                            videoView.visibility = View.VISIBLE
+//                            videoView.start()
+                        }
+                        imageView.load(url)
+                        findViewById<TextView>(R.id.title_view).text = serverResponseData.title
+                        findViewById<TextView>(R.id.explanation_view).text =
+                            serverResponseData.explanation
+                    }
                 }
             }
             is PictureOfTheDayData.Loading -> {

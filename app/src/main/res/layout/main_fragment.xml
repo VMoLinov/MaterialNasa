@@ -2,7 +2,8 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -11,7 +12,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/main"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:paddingStart="10dp"
             android:paddingEnd="10dp">
 
@@ -37,30 +38,19 @@
                     android:layout_height="wrap_content" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <LinearLayout
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="500dp"
-                android:orientation="horizontal"
+                android:layout_height="600dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/inputLayout">
 
                 <include
                     android:id="@+id/tableLayout"
-                    layout="@layout/activity_api" />
-            </LinearLayout>
+                    layout="@layout/view_pager" />
+            </FrameLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:background="?attr/colorSecondary"
-        app:itemHorizontalTranslationEnabled="true"
-        app:labelVisibilityMode="selected"
-        app:menu="@menu/menu_bottom_navigation_view" />
     <!--    <include layout="@layout/bottom_sheet_layout" />-->
 
     <!--    <com.google.android.material.bottomappbar.BottomAppBar-->
@@ -81,4 +71,16 @@
     <!--        app:layout_anchor="@id/bottom_app_bar"-->
     <!--        app:srcCompat="@drawable/ic_plus_fab"-->
     <!--        app:tint="#FFFFFF" />-->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="?attr/colorSecondary"
+        app:itemHorizontalTranslationEnabled="true"
+        app:labelVisibilityMode="selected"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/menu_bottom_navigation_view" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
