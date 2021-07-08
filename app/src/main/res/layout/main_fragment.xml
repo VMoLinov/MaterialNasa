@@ -38,78 +38,47 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout
-                android:id="@+id/chips"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="500dp"
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/inputLayout">
 
-                <com.google.android.material.chip.ChipGroup
-                    android:id="@+id/chipGroup"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:checkedChip="@id/today"
-                    app:singleSelection="true">
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/before_yesterday"
-                        android:layout_width="@dimen/chips_width"
-                        android:layout_height="wrap_content"
-                        android:text="@string/before_yesterday"
-                        android:textAlignment="center" />
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/yesterday"
-                        android:layout_width="@dimen/chips_width"
-                        android:layout_height="wrap_content"
-                        android:text="@string/yesterday"
-                        android:textAlignment="center" />
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/today"
-                        android:layout_width="@dimen/chips_width"
-                        android:layout_height="wrap_content"
-                        android:text="@string/today"
-                        android:textAlignment="center" />
-                </com.google.android.material.chip.ChipGroup>
+                <include
+                    android:id="@+id/tableLayout"
+                    layout="@layout/activity_api" />
             </LinearLayout>
-
-            <molinov.pictureoftheday.util.EquilateralImageView
-                android:id="@+id/imageView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:adjustViewBounds="true"
-                android:contentDescription="@string/photo_of_the_day_stub"
-                android:scaleType="fitCenter"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/chips"
-                app:srcCompat="@drawable/ic_no_photo_vector" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 
-    <include layout="@layout/bottom_sheet_layout" />
-
-    <com.google.android.material.bottomappbar.BottomAppBar
-        android:id="@+id/bottom_app_bar"
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        app:fabAlignmentMode="center"
-        app:hideOnScroll="true"
-        app:layout_scrollFlags="scroll|enterAlways"
-        app:navigationIcon="@drawable/ic_hamburger_menu_bottom_bar" />
+        android:background="?attr/colorSecondary"
+        app:itemHorizontalTranslationEnabled="true"
+        app:labelVisibilityMode="selected"
+        app:menu="@menu/menu_bottom_navigation_view" />
+    <!--    <include layout="@layout/bottom_sheet_layout" />-->
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/fab_btn"
-        app:layout_anchor="@id/bottom_app_bar"
-        app:srcCompat="@drawable/ic_plus_fab"
-        app:tint="#FFFFFF" />
+    <!--    <com.google.android.material.bottomappbar.BottomAppBar-->
+    <!--        android:id="@+id/bottom_app_bar"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_gravity="bottom"-->
+    <!--        app:fabAlignmentMode="center"-->
+    <!--        app:hideOnScroll="true"-->
+    <!--        app:layout_scrollFlags="scroll|enterAlways"-->
+    <!--        app:navigationIcon="@drawable/ic_hamburger_menu_bottom_bar" />-->
+
+    <!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+    <!--        android:id="@+id/fab"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:contentDescription="@string/fab_btn"-->
+    <!--        app:layout_anchor="@id/bottom_app_bar"-->
+    <!--        app:srcCompat="@drawable/ic_plus_fab"-->
+    <!--        app:tint="#FFFFFF" />-->
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

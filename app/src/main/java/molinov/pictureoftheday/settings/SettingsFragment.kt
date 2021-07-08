@@ -35,7 +35,6 @@ class SettingsFragment : Fragment() {
                 if (it != null) setChipsBehavior(it)
             }
         }
-//        binding.tabs.findViewById<TabItem>(R.id.tab2).textAlignment = TEXT_ALIGNMENT_VIEW_START
     }
 
     private fun setChipsBehavior(chip: Chip) {

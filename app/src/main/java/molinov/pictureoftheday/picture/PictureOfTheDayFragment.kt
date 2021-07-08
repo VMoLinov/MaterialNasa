@@ -4,24 +4,15 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.*
-import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import coil.api.load
-import com.google.android.material.bottomappbar.BottomAppBar
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.chip.Chip
-import molinov.pictureoftheday.MainActivity
+import com.google.android.material.tabs.TabLayoutMediator
 import molinov.pictureoftheday.R
-import molinov.pictureoftheday.api.ApiActivity
-import molinov.pictureoftheday.api.ApiBottomActivity
+import molinov.pictureoftheday.api.*
 import molinov.pictureoftheday.databinding.MainFragmentBinding
-import molinov.pictureoftheday.settings.SettingsFragment
-import molinov.pictureoftheday.util.BEFORE_YESTERDAY
-import molinov.pictureoftheday.util.TODAY
-import molinov.pictureoftheday.util.YESTERDAY
 
 class PictureOfTheDayFragment : Fragment() {
 
@@ -30,6 +21,9 @@ class PictureOfTheDayFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: PictureOfTheDayViewModel by lazy {
         ViewModelProvider(this).get(PictureOfTheDayViewModel::class.java)
+    }
+    private val adapter: ViewPagerAdapter by lazy {
+        ViewPagerAdapter(this@PictureOfTheDayFragment)
     }
 
     override fun onCreateView(
@@ -49,23 +43,53 @@ class PictureOfTheDayFragment : Fragment() {
                     Uri.parse("https://en.wikipedia.org/wiki/${binding.inputEditText.text.toString()}")
             })
         }
-        setBottomSheetBehavior(view.findViewById(R.id.bottom_sheet_container))
-        setBottomAppBar(view)
-        binding.chipGroup.findViewById<Chip>(R.id.today).isCheckable = true // ???
-        viewModel.getData(TODAY).observe(viewLifecycleOwner, { renderData(it) })
-        binding.chipGroup.setOnCheckedChangeListener { _, checkedId ->
-            when (checkedId) {
-                R.id.before_yesterday -> {
-                    viewModel.getData(BEFORE_YESTERDAY)
-                        .observe(viewLifecycleOwner, { renderData(it) })
+//        setBottomSheetBehavior(view.findViewById(R.id.bottom_sheet_container))
+//        setBottomAppBar(view)
+//        binding.chipGroup.findViewById<Chip>(R.id.today).isCheckable = true // ???
+//        viewModel.getData(TODAY).observe(viewLifecycleOwner, { renderData(it) })
+//        binding.chipGroup.setOnCheckedChangeListener { _, checkedId ->
+//            when (checkedId) {
+//                R.id.before_yesterday -> {
+//                    viewModel.getData(BEFORE_YESTERDAY)
+//                        .observe(viewLifecycleOwner, { renderData(it) })
+//                }
+//                R.id.yesterday -> {
+//                    viewModel.getData(YESTERDAY).observe(viewLifecycleOwner, { renderData(it) })
+//                }
+//                R.id.today -> {
+//                    viewModel.getData(TODAY).observe(viewLifecycleOwner, { renderData(it) })
+//                }
+//            }
+//        }
+        setTableLayout()
+    }
+
+    private fun setTableLayout() {
+        binding.tableLayout.apply {
+            viewPager.adapter = ViewPagerAdapter(this@PictureOfTheDayFragment)
+            indicator.setViewPager(viewPager)
+            TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+                tab.text = when (position) {
+                    1 -> resources.getString(R.string.yesterday)
+                    2 -> resources.getString(R.string.today)
+                    else -> resources.getString(R.string.before_yesterday)
                 }
-                R.id.yesterday -> {
-                    viewModel.getData(YESTERDAY).observe(viewLifecycleOwner, { renderData(it) })
+            }.attach()
+            viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+                override fun onPageSelected(position: Int) {
+                    when (position) {
+                        1 -> {
+                            MarsFragment()
+                        }
+                        2 -> {
+                            WeatherFragment()
+                        }
+                        else -> {
+                            EarthFragment()
+                        }
+                    }
                 }
-                R.id.today -> {
-                    viewModel.getData(TODAY).observe(viewLifecycleOwner, { renderData(it) })
-                }
-            }
+            })
         }
     }
 
@@ -77,17 +101,20 @@ class PictureOfTheDayFragment : Fragment() {
                 if (url.isNullOrEmpty()) {
 //                    showError()
                 } else {
+//                    val bundle = Bundle()
+//                    bundle.putString("KEY", url)
+//                    EarthFragment().arguments = bundle
+//                    adapter.createFragment(0)
 //                    showSuccess()
-                    binding.imageView.load(url) {
-                        lifecycle(this@PictureOfTheDayFragment)
-                        error(R.drawable.ic_load_error_vector)
-                        placeholder(R.drawable.ic_no_photo_vector)
-                    }
-                    setBottomSheetData(
-                        view?.findViewById(R.id.bottom_sheet_container),
-                        serverResponseData
-                    )
+//                    binding.imageView.load(url) {
+//                        lifecycle(this@PictureOfTheDayFragment)
+//                        error(R.drawable.ic_load_error_vector)
+//                        placeholder(R.drawable.ic_no_photo_vector)
                 }
+//                    setBottomSheetData(
+//                        view?.findViewById(R.id.bottom_sheet_container),
+//                        serverResponseData
+//                    )
             }
             is PictureOfTheDayData.Loading -> {
 //                showLoading()
@@ -98,20 +125,21 @@ class PictureOfTheDayFragment : Fragment() {
         }
     }
 
-    private fun setBottomSheetData(
-        bottomSheet: ConstraintLayout?, serverResponseData: PODServerResponseData
-    ) {
-        if (bottomSheet != null) {
-            bottomSheet.findViewById<TextView>(R.id.bottom_sheet_description_header).text =
-                serverResponseData.title
-            bottomSheet.findViewById<TextView>(R.id.bottom_sheet_description).text =
-                serverResponseData.explanation
-        }
-    }
+//    private fun setBottomSheetData(
+//        bottomSheet: ConstraintLayout?, serverResponseData: PODServerResponseData
+//    ) {
+//        if (bottomSheet != null) {
+//            bottomSheet.findViewById<TextView>(R.id.bottom_sheet_description_header).text =
+//                serverResponseData.title
+//            bottomSheet.findViewById<TextView>(R.id.bottom_sheet_description).text =
+//                serverResponseData.explanation
+//        }
+//    }
 
-    private fun setBottomSheetBehavior(bottomSheet: ConstraintLayout) {
-        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
-        bottomSheetBehavior.state = BottomSheetBehavior.STATE_SETTLING
+//    private fun setBottomSheetBehavior(bottomSheet: ConstraintLayout) {
+//        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
+//        bottomSheetBehavior.state = BottomSheetBehavior.STATE_SETTLING
+//        bottomSheet.setBackgroundColor(resources.getColor(R.color.primaryColor))
 //        bottomSheetBehavior.addBottomSheetCallback(object :
 //            BottomSheetBehavior.BottomSheetCallback() {
 //            override fun onStateChanged(bottomSheet: View, newState: Int) {
@@ -129,67 +157,67 @@ class PictureOfTheDayFragment : Fragment() {
 //                TODO()
 //            }
 //        })
-    }
+//    }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.menu_bottom_bar, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.app_bar_fav -> {
-                activity?.let { startActivity(Intent(it, ApiBottomActivity::class.java)) }
-            }
-            R.id.app_bar_settings -> {
-                parentFragmentManager
-                    .beginTransaction()
-                    .replace(R.id.container, SettingsFragment.newInstance())
-                    .addToBackStack(null)
-                    .commit()
-            }
-            R.id.app_bar_navigation -> {
-                val intent = Intent(context, ApiActivity::class.java)
-                startActivity(intent)
-            }
-            android.R.id.home -> {
-                activity?.let {
-                    BottomNavigationDrawerFragment.newInstance()
-                        .show(parentFragmentManager, "tag")
-                }
-            }
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
-    private fun setBottomAppBar(view: View) {
-        val context = activity as MainActivity
-        context.setSupportActionBar(view.findViewById(R.id.bottom_app_bar))
-        setHasOptionsMenu(true)
-        binding.fab.setOnClickListener {
-            if (isMain) {
-                isMain = false
-                binding.apply {
-                    bottomAppBar.navigationIcon = null
-                    bottomAppBar.fabAlignmentMode = BottomAppBar.FAB_ALIGNMENT_MODE_END
-                    fab.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_back_fab))
-                    bottomAppBar.replaceMenu(R.menu.menu_bottom_bar_other_screen)
-                }
-            } else {
-                isMain = true
-                binding.bottomAppBar.navigationIcon =
-                    ContextCompat.getDrawable(context, R.drawable.ic_hamburger_menu_bottom_bar)
-                binding.bottomAppBar.fabAlignmentMode = BottomAppBar.FAB_ALIGNMENT_MODE_CENTER
-                binding.fab.setImageDrawable(
-                    ContextCompat.getDrawable(
-                        context,
-                        R.drawable.ic_plus_fab
-                    )
-                )
-                binding.bottomAppBar.replaceMenu(R.menu.menu_bottom_bar)
-            }
-        }
-    }
+//    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+//        super.onCreateOptionsMenu(menu, inflater)
+//        inflater.inflate(R.menu.menu_bottom_bar, menu)
+//    }
+//
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        when (item.itemId) {
+//            R.id.app_bar_fav -> {
+//                activity?.let { startActivity(Intent(it, ApiBottomActivity::class.java)) }
+//            }
+//            R.id.app_bar_settings -> {
+//                parentFragmentManager
+//                    .beginTransaction()
+//                    .replace(R.id.container, SettingsFragment.newInstance())
+//                    .addToBackStack(null)
+//                    .commit()
+//            }
+//            R.id.app_bar_navigation -> {
+//                val intent = Intent(context, ApiActivity::class.java)
+//                startActivity(intent)
+//            }
+//            android.R.id.home -> {
+//                activity?.let {
+//                    BottomNavigationDrawerFragment.newInstance()
+//                        .show(parentFragmentManager, "tag")
+//                }
+//            }
+//        }
+//        return super.onOptionsItemSelected(item)
+//    }
+//
+//    private fun setBottomAppBar(view: View) {
+//        val context = activity as MainActivity
+//        context.setSupportActionBar(view.findViewById(R.id.bottom_app_bar))
+//        setHasOptionsMenu(true)
+//        binding.fab.setOnClickListener {
+//            if (isMain) {
+//                isMain = false
+//                binding.apply {
+//                    bottomAppBar.navigationIcon = null
+//                    bottomAppBar.fabAlignmentMode = BottomAppBar.FAB_ALIGNMENT_MODE_END
+//                    fab.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_back_fab))
+//                    bottomAppBar.replaceMenu(R.menu.menu_bottom_bar_other_screen)
+//                }
+//            } else {
+//                isMain = true
+//                binding.bottomAppBar.navigationIcon =
+//                    ContextCompat.getDrawable(context, R.drawable.ic_hamburger_menu_bottom_bar)
+//                binding.bottomAppBar.fabAlignmentMode = BottomAppBar.FAB_ALIGNMENT_MODE_CENTER
+//                binding.fab.setImageDrawable(
+//                    ContextCompat.getDrawable(
+//                        context,
+//                        R.drawable.ic_plus_fab
+//                    )
+//                )
+//                binding.bottomAppBar.replaceMenu(R.menu.menu_bottom_bar)
+//            }
+//        }
+//    }
 
     override fun onDestroy() {
         super.onDestroy()
