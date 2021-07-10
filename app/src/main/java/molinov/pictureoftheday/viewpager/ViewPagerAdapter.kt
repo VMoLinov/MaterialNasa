@@ -15,9 +15,9 @@ class ViewPagerAdapter(
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            1 -> ViewPagerItems(YESTERDAY)
-            2 -> ViewPagerItems(TODAY)
-            else -> ViewPagerItems(BEFORE_YESTERDAY)
+            1 -> ViewPagerItems.newInstance(YESTERDAY)
+            2 -> ViewPagerItems.newInstance(TODAY)
+            else -> ViewPagerItems.newInstance(BEFORE_YESTERDAY)
         }
     }
 }

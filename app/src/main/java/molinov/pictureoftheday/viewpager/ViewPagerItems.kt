@@ -14,7 +14,7 @@ import molinov.pictureoftheday.R
 import molinov.pictureoftheday.picture.PictureOfTheDayData
 import molinov.pictureoftheday.picture.PictureOfTheDayViewModel
 
-class ViewPagerItems(private val DAY: String) : Fragment() {
+class ViewPagerItems : Fragment() {
 
     private val viewModel: PictureOfTheDayViewModel by lazy {
         ViewModelProvider(this).get(PictureOfTheDayViewModel::class.java)
@@ -30,8 +30,11 @@ class ViewPagerItems(private val DAY: String) : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getData(DAY)
-            .observe(viewLifecycleOwner, { renderData(it) })
+        val b = requireArguments().getString("id", "id")
+        if (b != null) {
+            viewModel.getData(b)
+                .observe(viewLifecycleOwner, { renderData(it) })
+        }
     }
 
     private fun renderData(data: PictureOfTheDayData) {
@@ -62,6 +65,16 @@ class ViewPagerItems(private val DAY: String) : Fragment() {
             }
             is PictureOfTheDayData.Error -> {
             }
+        }
+    }
+
+    companion object {
+        fun newInstance(DAY: String): Fragment {
+            val bundle = Bundle()
+            bundle.putString("id", DAY)
+            val f = ViewPagerItems()
+            f.arguments = bundle
+            return f
         }
     }
 }

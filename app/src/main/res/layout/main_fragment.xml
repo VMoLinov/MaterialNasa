@@ -71,16 +71,5 @@
     <!--        app:layout_anchor="@id/bottom_app_bar"-->
     <!--        app:srcCompat="@drawable/ic_plus_fab"-->
     <!--        app:tint="#FFFFFF" />-->
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:background="?attr/colorSecondary"
-        app:itemHorizontalTranslationEnabled="true"
-        app:labelVisibilityMode="selected"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/menu_bottom_navigation_view" />
+<!--    <include layout="@layout/fragment_bottom_navigation_view" />-->
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

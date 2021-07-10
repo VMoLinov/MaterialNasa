@@ -64,24 +64,6 @@ class PictureOfTheDayFragment : Fragment() {
 //            }
 //        }
         setTableLayout()
-        binding.bottomNavigationView.setOnItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.bottom_view_settings -> {
-                    parentFragmentManager.beginTransaction()
-                        .replace(R.id.container, SettingsFragment.newInstance())
-                        .addToBackStack(null)
-                        .commit()
-                    true
-                }
-                R.id.bottom_view_mars -> {
-                    true
-                }
-                R.id.bottom_view_weather -> {
-                    true
-                }
-                else -> false
-            }
-        }
     }
 
     private fun setTableLayout() {
@@ -98,9 +80,9 @@ class PictureOfTheDayFragment : Fragment() {
             viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     when (position) {
-                        1 -> ViewPagerItems(YESTERDAY)
-                        2 -> ViewPagerItems(TODAY)
-                        else -> ViewPagerItems(BEFORE_YESTERDAY)
+                        1 -> ViewPagerItems.newInstance(YESTERDAY)
+                        2 -> ViewPagerItems.newInstance(TODAY)
+                        else -> ViewPagerItems.newInstance(BEFORE_YESTERDAY)
                     }
                 }
             })
