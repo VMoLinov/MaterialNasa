@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
                     R.id.container,
                     PictureOfTheDayFragment.newInstance()
                 ) //Why not fabric method is worked? PictureOfTheDayFragment()
-                .commitNow()
+                .commit()
         }
         setBottomNavigation(findViewById(R.id.bottom_navigation_view))
     }
@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.bottom_view_weather -> {
                     true
                 }
-                R.id.main -> {
+                R.id.bottom_view_main -> {
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.container, PictureOfTheDayFragment.newInstance())
                         .addToBackStack(null)
