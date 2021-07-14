@@ -51,7 +51,8 @@ class PODRetrofitImpl {
 
 data class EarthServerResponseData(
     @field:SerializedName("image") val image: String,
-    @field:SerializedName("date") val date: String
+    @field:SerializedName("date") val date: String,
+    @field:SerializedName("caption") val caption: String
 )
 
 data class PODServerResponseData(

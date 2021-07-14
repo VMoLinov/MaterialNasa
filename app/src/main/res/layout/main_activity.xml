@@ -10,9 +10,19 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintBottom_toTopOf="@id/bottom_navigation_view" />
+        app:layout_constraintBottom_toTopOf="@id/bottom_frame"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <include
-        android:id="@+id/bottom_navigation_view"
-        layout="@layout/fragment_bottom_navigation_view" />
+    <FrameLayout
+        android:id="@+id/bottom_frame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <include
+            android:id="@+id/bottom_navigation_view"
+            layout="@layout/fragment_bottom_navigation_view" />
+    </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

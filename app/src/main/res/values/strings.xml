@@ -69,4 +69,6 @@
     <string name="system">System</string>
     <string name="todo">todo</string>
     <string name="main">Main</string>
+    <string name="caption">This images was taken by NASA\'s EPIC camera onboard the NOAA DSCOVR spacecraft</string>
+    <string name="earth_button_text">Показать актуальные фото Земли</string>
 </resources>
