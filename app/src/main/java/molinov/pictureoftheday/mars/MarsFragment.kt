@@ -1,52 +1,124 @@
 package molinov.pictureoftheday.mars
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.ObjectAnimator
 import android.graphics.Rect
 import android.os.Bundle
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.core.view.ViewCompat
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.*
 import molinov.pictureoftheday.R
-import molinov.pictureoftheday.databinding.FragmentMarsShuffleBinding
+import molinov.pictureoftheday.databinding.FragmentMarsFabBinding
 
 class MarsFragment : Fragment() {
 
-    private var _binding: FragmentMarsShuffleBinding? = null
+    private var _binding: FragmentMarsFabBinding? = null
     private val binding get() = _binding!!
+    private var isExpanded = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val titles: MutableList<String> = ArrayList()
-        for (i in 0..4) {
-            titles.add(String.format("Item %d", i + 1))
-        }
-        binding.apply {
-            createViews(transitionsContainer, titles)
-            button.setOnClickListener {
-                TransitionManager.beginDelayedTransition(
-                    transitionsContainer,
-                    ChangeBounds()
-                )
-                titles.shuffle()
-                createViews(transitionsContainer, titles)
-            }
+        setFAB()
+    }
+
+    private fun setFAB() {
+        setInitialState()
+        binding.fab.setOnClickListener {
+            if (isExpanded) collapseFab()
+            else expandFAB()
         }
     }
 
-    private fun createViews(layout: ViewGroup, titles: List<String>) {
-        layout.removeAllViews()
-        for (title in titles) {
-            val textView = TextView(context)
-            textView.text = title
-            textView.gravity = Gravity.CENTER_HORIZONTAL
-            ViewCompat.setTransitionName(textView, title)
-            layout.addView(textView)
+    private fun setInitialState() {
+        binding.transparentBackground.alpha = 0f
+        binding.optionTwoContainer.apply {
+            alpha = 0f
+            isClickable = false
         }
+        binding.optionOneContainer.apply {
+            alpha = 0f
+            isClickable = false
+        }
+    }
+
+    private fun expandFAB() {
+        isExpanded = true
+        ObjectAnimator.ofFloat(binding.plusImageview, "rotation", 0f, 225f).start()
+        ObjectAnimator.ofFloat(binding.optionTwoContainer, "translationY", -130f).start()
+        ObjectAnimator.ofFloat(binding.optionOneContainer, "translationY", -250f).start()
+        binding.optionTwoContainer.animate()
+            .alpha(1f)
+            .setDuration(300)
+            .setListener(object : AnimatorListenerAdapter() {
+
+                override fun onAnimationEnd(animation: Animator?) {
+                    binding.optionTwoContainer.isClickable = true
+                    binding.optionTwoContainer.setOnClickListener {
+                        Toast.makeText(requireContext(), "Option 2", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            })
+        binding.optionOneContainer.animate()
+            .alpha(1f)
+            .setDuration(300)
+            .setListener(object : AnimatorListenerAdapter() {
+
+                override fun onAnimationEnd(animation: Animator) {
+                    binding.optionOneContainer.isClickable = true
+                    binding.optionOneContainer.setOnClickListener {
+                        Toast.makeText(requireContext(), "Option 1", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            })
+        binding.transparentBackground.animate()
+            .alpha(0.9f)
+            .setDuration(300)
+            .setListener(object : AnimatorListenerAdapter() {
+
+                override fun onAnimationEnd(animation: Animator) {
+                    binding.transparentBackground.isClickable = true
+                }
+            })
+    }
+
+    private fun collapseFab() {
+        isExpanded = false
+        ObjectAnimator.ofFloat(binding.plusImageview, "rotation", 0f, -180f).start()
+        ObjectAnimator.ofFloat(binding.optionTwoContainer, "translationY", 0f).start()
+        ObjectAnimator.ofFloat(binding.optionOneContainer, "translationY", 0f).start()
+        binding.optionTwoContainer.animate()
+            .alpha(0f)
+            .setDuration(300)
+            .setListener(object : AnimatorListenerAdapter() {
+
+                override fun onAnimationEnd(animation: Animator) {
+                    binding.optionTwoContainer.isClickable = false
+                    binding.optionOneContainer.setOnClickListener(null)
+                }
+            })
+        binding.optionOneContainer.animate()
+            .alpha(0f)
+            .setDuration(300)
+            .setListener(object : AnimatorListenerAdapter() {
+
+                override fun onAnimationEnd(animation: Animator) {
+                    binding.optionOneContainer.isClickable = false
+                }
+            })
+        binding.transparentBackground.animate()
+            .alpha(0f)
+            .setDuration(300)
+            .setListener(object : AnimatorListenerAdapter() {
+
+                override fun onAnimationEnd(animation: Animator) {
+                    binding.transparentBackground.isClickable = false
+                }
+            })
     }
 
     override fun onCreateView(
@@ -54,7 +126,7 @@ class MarsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentMarsShuffleBinding.inflate(inflater, container, false)
+        _binding = FragmentMarsFabBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -87,8 +159,6 @@ class MarsFragment : Fragment() {
                     transition.removeListener(this)
                 }
             })
-//        TransitionManager.beginDelayedTransition(binding.recyclerView, set)
-//        binding.recyclerView.adapter = null
     }
 
     inner class Adapter : RecyclerView.Adapter<ViewHolder>() {
