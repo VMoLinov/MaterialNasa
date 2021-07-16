@@ -1,127 +1,57 @@
 package molinov.pictureoftheday.mars
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
-import android.animation.ObjectAnimator
-import android.graphics.Rect
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import android.view.animation.AnticipateOvershootInterpolator
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.RecyclerView
-import androidx.transition.*
+import androidx.transition.ChangeBounds
+import androidx.transition.TransitionManager
 import molinov.pictureoftheday.R
-import molinov.pictureoftheday.databinding.FragmentMarsFabBinding
+import molinov.pictureoftheday.databinding.FragmentMarsBonusStartBinding
 
 class MarsFragment : Fragment() {
 
-    private var _binding: FragmentMarsFabBinding? = null
+    private var _binding: FragmentMarsBonusStartBinding? = null
     private val binding get() = _binding!!
-    private var isExpanded = false
+    private var show = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setFAB()
-        binding.scrollView.setOnScrollChangeListener { _, _, _, _, _ ->
-            binding.header.isSelected = binding.scrollView.canScrollVertically(-1)
+        binding.backgroundImage.setOnClickListener {
+            if (show) hideComponents()
+            else showComponents()
         }
     }
 
-    private fun setFAB() {
-        setInitialState()
-        binding.fab.setOnClickListener {
-            if (isExpanded) collapseFab()
-            else expandFAB()
-        }
+    private fun showComponents() {
+        show = true
+        val constraintSet = ConstraintSet()
+        constraintSet.clone(requireContext(), R.layout.fragment_mars_bonus_end)
+        val transition = ChangeBounds()
+        transition.interpolator = AnticipateOvershootInterpolator(1.0f)
+        transition.duration = 1200
+        TransitionManager.beginDelayedTransition(
+            binding.constraintContainer,
+            transition
+        )
+        constraintSet.applyTo(binding.constraintContainer)
     }
 
-    private fun setInitialState() {
-        binding.transparentBackground.alpha = 0f
-        binding.optionTwoContainer.apply {
-            alpha = 0f
-            isClickable = false
-        }
-        binding.optionOneContainer.apply {
-            alpha = 0f
-            isClickable = false
-        }
-    }
-
-    private fun expandFAB() {
-        isExpanded = true
-        ObjectAnimator.ofFloat(binding.plusImageview, "rotation", 0f, 225f).start()
-        ObjectAnimator.ofFloat(binding.optionTwoContainer, "translationY", -130f).start()
-        ObjectAnimator.ofFloat(binding.optionOneContainer, "translationY", -250f).start()
-        binding.optionTwoContainer.animate()
-            .alpha(1f)
-            .setDuration(300)
-            .setListener(object : AnimatorListenerAdapter() {
-
-                override fun onAnimationEnd(animation: Animator?) {
-                    binding.optionTwoContainer.isClickable = true
-                    binding.optionTwoContainer.setOnClickListener {
-                        Toast.makeText(requireContext(), "Option 2", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            })
-        binding.optionOneContainer.animate()
-            .alpha(1f)
-            .setDuration(300)
-            .setListener(object : AnimatorListenerAdapter() {
-
-                override fun onAnimationEnd(animation: Animator) {
-                    binding.optionOneContainer.isClickable = true
-                    binding.optionOneContainer.setOnClickListener {
-                        Toast.makeText(requireContext(), "Option 1", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            })
-        binding.transparentBackground.animate()
-            .alpha(0.9f)
-            .setDuration(300)
-            .setListener(object : AnimatorListenerAdapter() {
-
-                override fun onAnimationEnd(animation: Animator) {
-                    binding.transparentBackground.isClickable = true
-                }
-            })
-    }
-
-    private fun collapseFab() {
-        isExpanded = false
-        ObjectAnimator.ofFloat(binding.plusImageview, "rotation", 0f, -180f).start()
-        ObjectAnimator.ofFloat(binding.optionTwoContainer, "translationY", 0f).start()
-        ObjectAnimator.ofFloat(binding.optionOneContainer, "translationY", 0f).start()
-        binding.optionTwoContainer.animate()
-            .alpha(0f)
-            .setDuration(300)
-            .setListener(object : AnimatorListenerAdapter() {
-
-                override fun onAnimationEnd(animation: Animator) {
-                    binding.optionTwoContainer.isClickable = false
-                    binding.optionOneContainer.setOnClickListener(null)
-                }
-            })
-        binding.optionOneContainer.animate()
-            .alpha(0f)
-            .setDuration(300)
-            .setListener(object : AnimatorListenerAdapter() {
-
-                override fun onAnimationEnd(animation: Animator) {
-                    binding.optionOneContainer.isClickable = false
-                }
-            })
-        binding.transparentBackground.animate()
-            .alpha(0f)
-            .setDuration(300)
-            .setListener(object : AnimatorListenerAdapter() {
-
-                override fun onAnimationEnd(animation: Animator) {
-                    binding.transparentBackground.isClickable = false
-                }
-            })
+    private fun hideComponents() {
+        show = false
+        val constraintSet = ConstraintSet()
+        constraintSet.clone(requireContext(), R.layout.fragment_mars_bonus_start)
+        val transition = ChangeBounds()
+        transition.interpolator = AnticipateOvershootInterpolator(1.0f)
+        transition.duration = 1200
+        TransitionManager.beginDelayedTransition(
+            binding.constraintContainer,
+            transition
+        )
+        constraintSet.applyTo(binding.constraintContainer)
     }
 
     override fun onCreateView(
@@ -129,7 +59,7 @@ class MarsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentMarsFabBinding.inflate(inflater, container, false)
+        _binding = FragmentMarsBonusStartBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -141,52 +71,4 @@ class MarsFragment : Fragment() {
     companion object {
         fun newInstance() = MarsFragment()
     }
-
-    private fun explode(clickedView: View) {
-        val viewRect = Rect()
-        clickedView.getGlobalVisibleRect(viewRect)
-        val explode = Explode()
-        explode.epicenterCallback = object : Transition.EpicenterCallback() {
-
-            override fun onGetEpicenter(transition: Transition): Rect {
-                return viewRect
-            }
-        }
-        explode.excludeTarget(clickedView, true)
-        val set = TransitionSet()
-            .addTransition(explode)
-            .addTransition(Fade().addTarget(clickedView))
-            .addListener(object : TransitionListenerAdapter() {
-
-                override fun onTransitionEnd(transition: Transition) {
-                    transition.removeListener(this)
-                }
-            })
-    }
-
-    inner class Adapter : RecyclerView.Adapter<ViewHolder>() {
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):
-                ViewHolder {
-            return ViewHolder(
-                LayoutInflater.from(parent.context).inflate(
-                    R.layout.fragment_mars_explode_recycler_item,
-                    parent,
-                    false
-                ) as View
-            )
-        }
-
-        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            holder.itemView.setOnClickListener {
-                explode(it)
-            }
-        }
-
-        override fun getItemCount(): Int {
-            return 32
-        }
-    }
-
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
 }
