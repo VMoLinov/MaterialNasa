@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
                 .replace(
                     R.id.container,
                     PictureOfTheDayFragment.newInstance()
-                ) //Why not fabric method is worked? PictureOfTheDayFragment()
+                )
                 .commit()
         }
         setBottomNavigation(findViewById(R.id.bottom_navigation_view))
