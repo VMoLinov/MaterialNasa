@@ -2,32 +2,51 @@ package molinov.pictureoftheday.mars
 
 import android.graphics.Rect
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.*
 import molinov.pictureoftheday.R
-import molinov.pictureoftheday.databinding.FragmentMarsExplodeBinding
+import molinov.pictureoftheday.databinding.FragmentMarsShuffleBinding
 
 class MarsFragment : Fragment() {
 
-    private var _binding: FragmentMarsExplodeBinding? = null
+    private var _binding: FragmentMarsShuffleBinding? = null
     private val binding get() = _binding!!
-    private var textIsVisible = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        binding.button.setOnClickListener {
-//            TransitionManager.beginDelayedTransition(
-//                binding.transitionsContainer,
-//                Slide(Gravity.END)
-//            )
-//            textIsVisible = !textIsVisible
-//            binding.text.visibility = if (textIsVisible) View.VISIBLE else View.GONE
-//        }
-        binding.recyclerView.adapter = Adapter()
+        val titles: MutableList<String> = ArrayList()
+        for (i in 0..4) {
+            titles.add(String.format("Item %d", i + 1))
+        }
+        binding.apply {
+            createViews(transitionsContainer, titles)
+            button.setOnClickListener {
+                TransitionManager.beginDelayedTransition(
+                    transitionsContainer,
+                    ChangeBounds()
+                )
+                titles.shuffle()
+                createViews(transitionsContainer, titles)
+            }
+        }
+    }
+
+    private fun createViews(layout: ViewGroup, titles: List<String>) {
+        layout.removeAllViews()
+        for (title in titles) {
+            val textView = TextView(context)
+            textView.text = title
+            textView.gravity = Gravity.CENTER_HORIZONTAL
+            ViewCompat.setTransitionName(textView, title)
+            layout.addView(textView)
+        }
     }
 
     override fun onCreateView(
@@ -35,7 +54,7 @@ class MarsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentMarsExplodeBinding.inflate(inflater, container, false)
+        _binding = FragmentMarsShuffleBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -68,8 +87,8 @@ class MarsFragment : Fragment() {
                     transition.removeListener(this)
                 }
             })
-        TransitionManager.beginDelayedTransition(binding.recyclerView, set)
-        binding.recyclerView.adapter = null
+//        TransitionManager.beginDelayedTransition(binding.recyclerView, set)
+//        binding.recyclerView.adapter = null
     }
 
     inner class Adapter : RecyclerView.Adapter<ViewHolder>() {
