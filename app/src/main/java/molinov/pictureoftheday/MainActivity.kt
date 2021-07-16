@@ -6,6 +6,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import molinov.pictureoftheday.databinding.MainActivityBinding
 import molinov.pictureoftheday.earth.EarthFragment
+import molinov.pictureoftheday.mars.MarsFragment
 import molinov.pictureoftheday.picture.PictureOfTheDayFragment
 import molinov.pictureoftheday.settings.SettingsFragment
 import molinov.pictureoftheday.util.THEME
@@ -50,6 +51,10 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.bottom_view_mars -> {
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.container, MarsFragment.newInstance())
+                        .addToBackStack(null)
+                        .commit()
                     true
                 }
                 R.id.bottom_view_weather -> {
