@@ -1,6 +1,7 @@
 package molinov.pictureoftheday
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -26,7 +27,7 @@ class MainActivity : AppCompatActivity() {
                 .replace(
                     R.id.container,
                     PictureOfTheDayFragment.newInstance()
-                ) //Why not fabric method is worked? PictureOfTheDayFragment()
+                )
                 .commit()
         }
         setBottomNavigation(findViewById(R.id.bottom_navigation_view))
