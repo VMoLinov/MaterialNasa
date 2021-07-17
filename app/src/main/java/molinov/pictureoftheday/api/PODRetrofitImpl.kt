@@ -65,7 +65,7 @@ data class PODServerResponseData(
 )
 
 sealed class EarthData {
-    data class Success(val serverResponseData: List<EarthServerResponseData>) : EarthData()
+    data class Success(val serverResponseData: Map<String, String>) : EarthData()
     data class Error(val error: Throwable) : EarthData()
     data class Loading(val progress: Int?) : EarthData()
 }

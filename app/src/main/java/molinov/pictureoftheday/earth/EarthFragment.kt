@@ -5,16 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import coil.api.load
 import molinov.pictureoftheday.BuildConfig
 import molinov.pictureoftheday.databinding.FragmentEarthStartBinding
 import molinov.pictureoftheday.picture.EarthData
-import molinov.pictureoftheday.picture.baseURL
-import java.text.SimpleDateFormat
-import java.util.*
-import kotlin.collections.ArrayList
 
 class EarthFragment : Fragment() {
 
@@ -23,6 +22,8 @@ class EarthFragment : Fragment() {
     private val viewModel: EarthFragmentViewModel by lazy {
         ViewModelProvider(this).get(EarthFragmentViewModel::class.java)
     }
+    private lateinit var images: List<AppCompatImageView>
+    private lateinit var texts: List<AppCompatTextView>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,23 +36,20 @@ class EarthFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.apply {
+            images = listOf(imageViewTop, imageViewCenter, imageViewBottom)
+            texts = listOf(textViewTop, textViewCenter, textViewBottom)
+        }
         viewModel.getData().observe(viewLifecycleOwner, { renderData(it) })
     }
 
     private fun renderData(data: EarthData) {
         when (data) {
             is EarthData.Success -> {
-                val url = buildURL(data)
-                val response = data.serverResponseData
-                binding.apply {
-                    val images = listOf<ImageView>(imageViewTop, imageViewCenter, imageViewBottom)
-                    val texts = listOf(textViewTop, textViewCenter, textViewBottom)
-                    var index = 0
-                    for (item in url) {
-                        images[index].load(item.value)
-                        texts[index++].text = response[item.key].date
-                    }
-                    buttonEarth.visibility = View.VISIBLE
+                var index = 0
+                for ((key, value) in data.serverResponseData) {
+                    texts[index].text = key
+                    images[index++].load(value)
                 }
             }
             is EarthData.Loading -> {
@@ -63,27 +61,7 @@ class EarthFragment : Fragment() {
         }
     }
 
-    private fun buildURL(data: EarthData.Success): Map<Int, String> {
-        val response = data.serverResponseData
-        val calendar = Calendar.getInstance()
-        val urls: MutableMap<Int, String> = HashMap()
-        val count: MutableList<Int> = ArrayList()
-        var index: Int
-        for (i in 1..IMAGES) {
-            do index = Random().nextInt(response.size)
-            while (count.contains(index))
-            count.add(index)
-            val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(response[index].date)
-            calendar.time = formatter!!
-            val date = SimpleDateFormat("yyyy/MM/dd", Locale.US).format(calendar.time)
-            urls[index] =
-                "${baseURL}EPIC/archive/natural/$date/png/${response[index].image}.png?api_key=${BuildConfig.NASA_API_KEY}"
-        }
-        return urls
-    }
-
     companion object {
-        const val IMAGES = 3
         fun newInstance() = EarthFragment()
     }
 }
