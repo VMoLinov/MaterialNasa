@@ -30,9 +30,9 @@ class ViewPagerItems : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val b = requireArguments().getString("id", "id")
-        if (b != null) {
-            viewModel.getData(b)
+        val arguments = requireArguments().getString(ARGS_KEY, ARGS_KEY)
+        if (arguments != null) {
+            viewModel.getData(arguments)
                 .observe(viewLifecycleOwner, { renderData(it) })
         }
     }
@@ -43,7 +43,7 @@ class ViewPagerItems : Fragment() {
                 val serverResponseData = data.serverResponseData
                 val url = serverResponseData.url
                 if (url.isNullOrEmpty()) {
-
+//                    TODO
                 } else {
                     this.view?.apply {
                         val imageView = findViewById<ImageView>(R.id.image_view)
@@ -65,16 +65,19 @@ class ViewPagerItems : Fragment() {
             }
             is PictureOfTheDayData.Error -> {
             }
+            else -> {
+            }
         }
     }
 
     companion object {
+        const val ARGS_KEY = "KEY"
         fun newInstance(DAY: String): Fragment {
             val bundle = Bundle()
-            bundle.putString("id", DAY)
-            val f = ViewPagerItems()
-            f.arguments = bundle
-            return f
+            bundle.putString(ARGS_KEY, DAY)
+            val fragment = ViewPagerItems()
+            fragment.arguments = bundle
+            return fragment
         }
     }
 }

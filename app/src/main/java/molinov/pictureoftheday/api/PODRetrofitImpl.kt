@@ -2,6 +2,7 @@ package molinov.pictureoftheday.picture
 
 import com.google.gson.GsonBuilder
 import com.google.gson.annotations.SerializedName
+import molinov.pictureoftheday.api.PictureOfTheDayAPI
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
@@ -10,11 +11,20 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
 
+const val baseURL = "https://api.nasa.gov/"
+
 class PODRetrofitImpl {
 
-    private val baseURL = "https://api.nasa.gov/"
-
     fun getRetrofitImpl(): PictureOfTheDayAPI {
+        val podRetrofit = Retrofit.Builder()
+            .baseUrl(baseURL)
+            .addConverterFactory(GsonConverterFactory.create(GsonBuilder().setLenient().create()))
+            .client(createOkHttpClient(PODInterceptor()))
+            .build()
+        return podRetrofit.create(PictureOfTheDayAPI::class.java)
+    }
+
+    fun getEarthPictures(): PictureOfTheDayAPI {
         val podRetrofit = Retrofit.Builder()
             .baseUrl(baseURL)
             .addConverterFactory(GsonConverterFactory.create(GsonBuilder().setLenient().create()))
@@ -39,6 +49,12 @@ class PODRetrofitImpl {
     }
 }
 
+data class EarthServerResponseData(
+    @field:SerializedName("image") val image: String,
+    @field:SerializedName("date") val date: String,
+    @field:SerializedName("caption") val caption: String
+)
+
 data class PODServerResponseData(
     @field:SerializedName("date") val date: String?,
     @field:SerializedName("explanation") val explanation: String?,
@@ -47,6 +63,12 @@ data class PODServerResponseData(
     @field:SerializedName("title") val title: String?,
     @field:SerializedName("url") val url: String?
 )
+
+sealed class EarthData {
+    data class Success(val serverResponseData: Map<String, String>) : EarthData()
+    data class Error(val error: Throwable) : EarthData()
+    data class Loading(val progress: Int?) : EarthData()
+}
 
 sealed class PictureOfTheDayData {
     data class Success(val serverResponseData: PODServerResponseData) : PictureOfTheDayData()

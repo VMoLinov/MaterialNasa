@@ -18,8 +18,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-<!--        <activity android:name=".api.ApiActivity" />-->
-        <activity android:name=".api.ApiBottomActivity" />
 
         <meta-data
             android:name="preloaded_fonts"

@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import molinov.pictureoftheday.databinding.MainActivityBinding
-import molinov.pictureoftheday.picture.BottomNavigationViewFragment
+import molinov.pictureoftheday.earth.EarthFragment
 import molinov.pictureoftheday.picture.PictureOfTheDayFragment
 import molinov.pictureoftheday.settings.SettingsFragment
 import molinov.pictureoftheday.util.THEME
@@ -38,6 +38,13 @@ class MainActivity : AppCompatActivity() {
                 R.id.bottom_view_settings -> {
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.container, SettingsFragment.newInstance())
+                        .addToBackStack(null)
+                        .commit()
+                    true
+                }
+                R.id.bottom_view_earth -> {
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.container, EarthFragment.newInstance())
                         .addToBackStack(null)
                         .commit()
                     true
