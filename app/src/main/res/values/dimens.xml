@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="chips_width">100dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="custom_tabs_padding">10dp</dimen>
+    <dimen name="card_media_height">194dp</dimen>
 </resources>

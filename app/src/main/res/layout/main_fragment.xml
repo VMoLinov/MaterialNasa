@@ -2,7 +2,8 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -11,7 +12,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/main"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:paddingStart="10dp"
             android:paddingEnd="10dp">
 
@@ -37,79 +38,38 @@
                     android:layout_height="wrap_content" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <LinearLayout
-                android:id="@+id/chips"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="600dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/inputLayout">
 
-                <com.google.android.material.chip.ChipGroup
-                    android:id="@+id/chipGroup"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:checkedChip="@id/today"
-                    app:singleSelection="true">
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/before_yesterday"
-                        android:layout_width="@dimen/chips_width"
-                        android:layout_height="wrap_content"
-                        android:text="@string/before_yesterday"
-                        android:textAlignment="center" />
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/yesterday"
-                        android:layout_width="@dimen/chips_width"
-                        android:layout_height="wrap_content"
-                        android:text="@string/yesterday"
-                        android:textAlignment="center" />
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/today"
-                        android:layout_width="@dimen/chips_width"
-                        android:layout_height="wrap_content"
-                        android:text="@string/today"
-                        android:textAlignment="center" />
-                </com.google.android.material.chip.ChipGroup>
-            </LinearLayout>
-
-            <molinov.pictureoftheday.util.EquilateralImageView
-                android:id="@+id/imageView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:adjustViewBounds="true"
-                android:contentDescription="@string/photo_of_the_day_stub"
-                android:scaleType="fitCenter"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/chips"
-                app:srcCompat="@drawable/ic_no_photo_vector" />
+                <include
+                    android:id="@+id/tableLayout"
+                    layout="@layout/view_pager" />
+            </FrameLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
+    <!--    <include layout="@layout/bottom_sheet_layout" />-->
 
-    <include layout="@layout/bottom_sheet_layout" />
+    <!--    <com.google.android.material.bottomappbar.BottomAppBar-->
+    <!--        android:id="@+id/bottom_app_bar"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_gravity="bottom"-->
+    <!--        app:fabAlignmentMode="center"-->
+    <!--        app:hideOnScroll="true"-->
+    <!--        app:layout_scrollFlags="scroll|enterAlways"-->
+    <!--        app:navigationIcon="@drawable/ic_hamburger_menu_bottom_bar" />-->
 
-    <com.google.android.material.bottomappbar.BottomAppBar
-        android:id="@+id/bottom_app_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        app:fabAlignmentMode="center"
-        app:hideOnScroll="true"
-        app:layout_scrollFlags="scroll|enterAlways"
-        app:navigationIcon="@drawable/ic_hamburger_menu_bottom_bar" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/fab_btn"
-        app:layout_anchor="@id/bottom_app_bar"
-        app:srcCompat="@drawable/ic_plus_fab"
-        app:tint="#FFFFFF" />
+    <!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+    <!--        android:id="@+id/fab"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:contentDescription="@string/fab_btn"-->
+    <!--        app:layout_anchor="@id/bottom_app_bar"-->
+    <!--        app:srcCompat="@drawable/ic_plus_fab"-->
+    <!--        app:tint="#FFFFFF" />-->
+<!--    <include layout="@layout/fragment_bottom_navigation_view" />-->
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
