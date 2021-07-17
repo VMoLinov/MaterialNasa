@@ -11,12 +11,13 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import coil.api.load
-import molinov.pictureoftheday.databinding.FragmentEarthEndBinding
+import molinov.pictureoftheday.BuildConfig
+import molinov.pictureoftheday.databinding.FragmentEarthStartBinding
 import molinov.pictureoftheday.picture.EarthData
 
 class EarthFragment : Fragment() {
 
-    private var _binding: FragmentEarthEndBinding? = null
+    private var _binding: FragmentEarthStartBinding? = null
     private val binding get() = _binding!!
     private val viewModel: EarthFragmentViewModel by lazy {
         ViewModelProvider(this).get(EarthFragmentViewModel::class.java)
@@ -29,7 +30,7 @@ class EarthFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentEarthEndBinding.inflate(inflater, container, false)
+        _binding = FragmentEarthStartBinding.inflate(inflater, container, false)
         return binding.root
     }
 
