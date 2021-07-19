@@ -48,4 +48,8 @@
         <item name="fontFamily">@font/acme</item>
         <item name="android:fontFamily">@font/acme</item>
     </style>
+
+    <style name="App.Black">
+        <item name="android:background">@color/black</item>
+    </style>
 </resources>
