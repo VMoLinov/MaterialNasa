@@ -7,7 +7,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import molinov.pictureoftheday.databinding.FragmentSystemBinding
 import molinov.pictureoftheday.picture.Data
 
@@ -15,6 +17,7 @@ class SystemFragment : Fragment() {
 
     private var _binding: FragmentSystemBinding? = null
     private val binding get() = _binding!!
+    lateinit var itemTouchHelper: ItemTouchHelper
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -23,12 +26,17 @@ class SystemFragment : Fragment() {
         )
         data.add(0, Pair(Data("Header"), false))
         val adapter = SystemRecyclerAdapter(
-            object : SystemRecyclerAdapter.OnListItemClickListener {
+            object : OnListItemClickListener {
                 override fun onItemClick(data: Data) {
                     Toast.makeText(context, data.someText, Toast.LENGTH_SHORT).show()
                 }
             },
-            data
+            data,
+            object : OnStartDragListener {
+                override fun onStartDrag(viewHolder: RecyclerView.ViewHolder) {
+                    itemTouchHelper.startDrag(viewHolder)
+                }
+            }
         )
         binding.recyclerView.adapter = adapter
         binding.recyclerView.addItemDecoration(
@@ -38,6 +46,8 @@ class SystemFragment : Fragment() {
             )
         )
         binding.recyclerFAB.setOnClickListener { adapter.appendItem() }
+        itemTouchHelper = ItemTouchHelper(ItemTouchHelperCallback(adapter))
+        itemTouchHelper.attachToRecyclerView(binding.recyclerView)
     }
 
     override fun onCreateView(

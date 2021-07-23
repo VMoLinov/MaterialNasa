@@ -63,7 +63,8 @@ class EarthFragmentViewModel(
             do index = Random().nextInt(data.size)
             while (count.contains(index))
             count.add(index)
-            val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US).parse(data[index].date)
+            val formatter =
+                SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US).parse(data[index].date)
             calendar.time = formatter!!
             val dateToSrv = SimpleDateFormat("yyyy/MM/dd", Locale.US).format(calendar.time)
             val dateToReturn =

@@ -1,6 +1,8 @@
 package molinov.pictureoftheday.system
 
+import android.graphics.Color
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageView
@@ -11,8 +13,9 @@ import molinov.pictureoftheday.picture.Data
 
 class SystemRecyclerAdapter(
     private var onListItemClickListener: OnListItemClickListener,
-    private var data: MutableList<Pair<Data, Boolean>>
-) : RecyclerView.Adapter<SystemRecyclerAdapter.BaseViewHolder>() {
+    private var data: MutableList<Pair<Data, Boolean>>,
+    private val dragListener: OnStartDragListener
+) : RecyclerView.Adapter<SystemRecyclerAdapter.BaseViewHolder>(), ItemTouchHelperAdapter {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -60,6 +63,21 @@ class SystemRecyclerAdapter(
         }
     }
 
+    override fun onItemMove(fromPosition: Int, toPosition: Int) {
+        data.removeAt(fromPosition).apply {
+            data.add(
+                if (toPosition > fromPosition) toPosition - 1 else
+                    toPosition, this
+            )
+        }
+        notifyItemMoved(fromPosition, toPosition)
+    }
+
+    override fun onItemDismiss(position: Int) {
+        data.removeAt(position)
+        notifyItemRemoved(position)
+    }
+
     fun appendItem() {
         data.add(generateItem())
         notifyItemInserted(itemCount - 1)
@@ -101,6 +119,13 @@ class SystemRecyclerAdapter(
             itemView.findViewById<AppCompatTextView>(R.id.marsTextView).setOnClickListener {
                 toggleText()
             }
+            itemView.findViewById<AppCompatImageView>(R.id.dragHandleImageView)
+                .setOnTouchListener { _, event ->
+                    if (event.action == MotionEvent.ACTION_DOWN) {
+                        dragListener.onStartDrag(this)
+                    }
+                    false
+                }
         }
 
         private fun toggleText() {
@@ -130,7 +155,7 @@ class SystemRecyclerAdapter(
         }
 
         private fun moveDown() {
-            layoutPosition.takeIf { it > 1 }?.also { currentPosition ->
+            layoutPosition.takeIf { it < data.size - 1 }?.also { currentPosition ->
                 data.removeAt(currentPosition).apply {
                     data.add(currentPosition + 1, this)
                 }
@@ -147,10 +172,6 @@ class SystemRecyclerAdapter(
         }
     }
 
-    interface OnListItemClickListener {
-        fun onItemClick(data: Data)
-    }
-
     companion object {
         private const val TYPE_EARTH = 0
         private const val TYPE_MARS = 1
@@ -158,7 +179,16 @@ class SystemRecyclerAdapter(
     }
 
     abstract class BaseViewHolder(itemView: View) :
-        RecyclerView.ViewHolder(itemView) {
+        RecyclerView.ViewHolder(itemView), ItemTouchHelperViewHolder {
+
         abstract fun bind(data: Pair<Data, Boolean>)
+
+        override fun onItemSelected() {
+            itemView.setBackgroundColor(Color.LTGRAY)
+        }
+
+        override fun onItemClear() {
+            itemView.setBackgroundColor(Color.WHITE)
+        }
     }
 }
