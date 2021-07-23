@@ -6,3 +6,5 @@ const val TODAY = "TODAY"
 const val RANDOM = "TODAY"
 const val THEME = "THEME"
 const val THEME_INT = "THEME_INT"
+
+val RECYCLER_NAMES = listOf("EARTH", "MARS")

@@ -50,8 +50,9 @@ class PODRetrofitImpl {
 }
 
 data class Data(
-    val someText: String = "Text",
-    val someDescription: String? = "Description"
+    val type: Int,
+    val someText: String,
+    val someDescription: String?
 )
 
 data class EarthServerResponseData(

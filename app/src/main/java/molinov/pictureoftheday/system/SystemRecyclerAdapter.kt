@@ -1,5 +1,6 @@
 package molinov.pictureoftheday.system
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -10,6 +11,8 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
 import molinov.pictureoftheday.R
 import molinov.pictureoftheday.picture.Data
+import molinov.pictureoftheday.util.RECYCLER_NAMES
+import kotlin.random.Random
 
 class SystemRecyclerAdapter(
     private var onListItemClickListener: OnListItemClickListener,
@@ -56,11 +59,7 @@ class SystemRecyclerAdapter(
     }
 
     override fun getItemViewType(position: Int): Int {
-        return when {
-            position == 0 -> TYPE_HEADER
-            data[position].first.someDescription.isNullOrBlank() -> TYPE_MARS
-            else -> TYPE_EARTH
-        }
+        return data[position].first.type
     }
 
     override fun onItemMove(fromPosition: Int, toPosition: Int) {
@@ -83,10 +82,12 @@ class SystemRecyclerAdapter(
         notifyItemInserted(itemCount - 1)
     }
 
-    private fun generateItem() = Pair(Data("Mars", ""), false)
+    private fun generateItem() =
+        Pair(Data(Random.nextInt(2), RECYCLER_NAMES[Random.nextInt(2)], null), false)
 
     inner class EarthViewHolder(view: View) : BaseViewHolder(view) {
         override fun bind(data: Pair<Data, Boolean>) {
+            super.bind(data)
             if (layoutPosition != RecyclerView.NO_POSITION) {
                 itemView.findViewById<AppCompatTextView>(R.id.descriptionTextView).text =
                     data.first.someDescription
@@ -99,6 +100,7 @@ class SystemRecyclerAdapter(
 
     inner class MarsViewHolder(view: View) : BaseViewHolder(view) {
         override fun bind(data: Pair<Data, Boolean>) {
+            super.bind(data)
             itemView.findViewById<AppCompatImageView>(R.id.marsImageView).setOnClickListener {
                 onListItemClickListener.onItemClick(data.first)
             }
@@ -119,13 +121,6 @@ class SystemRecyclerAdapter(
             itemView.findViewById<AppCompatTextView>(R.id.marsTextView).setOnClickListener {
                 toggleText()
             }
-            itemView.findViewById<AppCompatImageView>(R.id.dragHandleImageView)
-                .setOnTouchListener { _, event ->
-                    if (event.action == MotionEvent.ACTION_DOWN) {
-                        dragListener.onStartDrag(this)
-                    }
-                    false
-                }
         }
 
         private fun toggleText() {
@@ -175,13 +170,21 @@ class SystemRecyclerAdapter(
     companion object {
         private const val TYPE_EARTH = 0
         private const val TYPE_MARS = 1
-        private const val TYPE_HEADER = 2
     }
 
-    abstract class BaseViewHolder(itemView: View) :
+    abstract inner class BaseViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView), ItemTouchHelperViewHolder {
 
-        abstract fun bind(data: Pair<Data, Boolean>)
+        @SuppressLint("ClickableViewAccessibility")
+        open fun bind(data: Pair<Data, Boolean>) {
+            itemView.findViewById<AppCompatImageView>(R.id.dragHandleImageView)
+                .setOnTouchListener { _, event ->
+                    if (event.action == MotionEvent.ACTION_DOWN || event.action == MotionEvent.ACTION_UP) {
+                        dragListener.onStartDrag(this)
+                    }
+                    true
+                }
+        }
 
         override fun onItemSelected() {
             itemView.setBackgroundColor(Color.LTGRAY)

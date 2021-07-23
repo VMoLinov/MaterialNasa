@@ -6,8 +6,8 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/earthImageView"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -28,7 +28,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/dragHandleImageView"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_wikipedia" />
 
@@ -40,21 +40,18 @@
         android:textColor="#000"
         android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="@+id/earthImageView"
-        app:layout_constraintEnd_toStartOf="@+id/barrier"
+        app:layout_constraintEnd_toStartOf="@+id/wikiImageView"
         app:layout_constraintStart_toEndOf="@+id/earthImageView"
         app:layout_constraintTop_toTopOf="@+id/earthImageView" />
 
-    <androidx.constraintlayout.widget.Barrier
-        android:id="@+id/barrier"
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/dragHandleImageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:barrierDirection="end"
-        app:constraint_referenced_ids="wikiImageView" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:background="#000"
-        app:layout_constraintBottom_toBottomOf="@+id/earthImageView"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:layout_margin="15dp"
+        android:tint="@color/cardview_shadow_start_color"
+        app:layout_constraintBottom_toBottomOf="@id/descriptionTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/descriptionTextView"
+        app:srcCompat="@drawable/ic_hamburger_menu_bottom_bar" />
 </androidx.constraintlayout.widget.ConstraintLayout>

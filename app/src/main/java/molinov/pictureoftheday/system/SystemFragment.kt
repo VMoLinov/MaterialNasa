@@ -22,9 +22,9 @@ class SystemFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val data = arrayListOf(
-            Pair(Data("Mars", ""), false)
+            Pair(Data(1, "", null), false)
         )
-        data.add(0, Pair(Data("Header"), false))
+        data.add(0, Pair(Data(2, "", null), false))
         val adapter = SystemRecyclerAdapter(
             object : OnListItemClickListener {
                 override fun onItemClick(data: Data) {
