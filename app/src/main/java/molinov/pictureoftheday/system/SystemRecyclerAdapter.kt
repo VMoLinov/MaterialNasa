@@ -3,18 +3,18 @@ package molinov.pictureoftheday.system
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
 import molinov.pictureoftheday.R
 import molinov.pictureoftheday.picture.Data
 
 class SystemRecyclerAdapter(
     private var onListItemClickListener: OnListItemClickListener,
-    private var data: List<Data>
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private var data: MutableList<Pair<Data, Boolean>>
+) : RecyclerView.Adapter<SystemRecyclerAdapter.BaseViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return when (viewType) {
             TYPE_EARTH -> {
@@ -44,21 +44,8 @@ class SystemRecyclerAdapter(
         }
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when (getItemViewType(position)) {
-            TYPE_EARTH -> {
-                holder as EarthViewHolder
-                holder.bind(data[position])
-            }
-            TYPE_MARS -> {
-                holder as MarsViewHolder
-                holder.bind(data[position])
-            }
-            else -> {
-                holder as HeaderViewHolder
-                holder.bind(data[position])
-            }
-        }
+    override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
+        holder.bind(data[position])
     }
 
     override fun getItemCount(): Int {
@@ -68,35 +55,94 @@ class SystemRecyclerAdapter(
     override fun getItemViewType(position: Int): Int {
         return when {
             position == 0 -> TYPE_HEADER
-            data[position].someDescription.isNullOrBlank() -> TYPE_MARS
+            data[position].first.someDescription.isNullOrBlank() -> TYPE_MARS
             else -> TYPE_EARTH
         }
     }
 
-    inner class EarthViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(data: Data) {
+    fun appendItem() {
+        data.add(generateItem())
+        notifyItemInserted(itemCount - 1)
+    }
+
+    private fun generateItem() = Pair(Data("Mars", ""), false)
+
+    inner class EarthViewHolder(view: View) : BaseViewHolder(view) {
+        override fun bind(data: Pair<Data, Boolean>) {
             if (layoutPosition != RecyclerView.NO_POSITION) {
-                itemView.findViewById<TextView>(R.id.descriptionTextView).text =
-                    data.someDescription
-                itemView.findViewById<ImageView>(R.id.wikiImageView).setOnClickListener {
-                    onListItemClickListener.onItemClick(data)
+                itemView.findViewById<AppCompatTextView>(R.id.descriptionTextView).text =
+                    data.first.someDescription
+                itemView.findViewById<AppCompatImageView>(R.id.wikiImageView).setOnClickListener {
+                    onListItemClickListener.onItemClick(data.first)
                 }
             }
         }
     }
 
-    inner class MarsViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(data: Data) {
-            itemView.findViewById<ImageView>(R.id.marsImageView).setOnClickListener {
-                onListItemClickListener.onItemClick(data)
+    inner class MarsViewHolder(view: View) : BaseViewHolder(view) {
+        override fun bind(data: Pair<Data, Boolean>) {
+            itemView.findViewById<AppCompatImageView>(R.id.marsImageView).setOnClickListener {
+                onListItemClickListener.onItemClick(data.first)
+            }
+            itemView.findViewById<AppCompatImageView>(R.id.addItemImageView).setOnClickListener {
+                addItem()
+            }
+            itemView.findViewById<AppCompatImageView>(R.id.removeItemImageView).setOnClickListener {
+                removeItem()
+            }
+            itemView.findViewById<AppCompatImageView>(R.id.moveItemUp).setOnClickListener {
+                moveUp()
+            }
+            itemView.findViewById<AppCompatImageView>(R.id.moveItemDown).setOnClickListener {
+                moveDown()
+            }
+            itemView.findViewById<AppCompatTextView>(R.id.marsDescriptionTextView).visibility =
+                if (data.second) View.VISIBLE else View.GONE
+            itemView.findViewById<AppCompatTextView>(R.id.marsTextView).setOnClickListener {
+                toggleText()
+            }
+        }
+
+        private fun toggleText() {
+            data[layoutPosition] = data[layoutPosition].let {
+                it.first to !it.second
+            }
+            notifyItemChanged(layoutPosition)
+        }
+
+        private fun addItem() {
+            data.add(layoutPosition, generateItem())
+            notifyItemInserted(layoutPosition)
+        }
+
+        private fun removeItem() {
+            data.removeAt(layoutPosition)
+            notifyItemRemoved(layoutPosition)
+        }
+
+        private fun moveUp() {
+            layoutPosition.takeIf { it > 1 }?.also { currentPosition ->
+                data.removeAt(currentPosition).apply {
+                    data.add(currentPosition - 1, this)
+                }
+                notifyItemMoved(currentPosition, currentPosition - 1)
+            }
+        }
+
+        private fun moveDown() {
+            layoutPosition.takeIf { it > 1 }?.also { currentPosition ->
+                data.removeAt(currentPosition).apply {
+                    data.add(currentPosition + 1, this)
+                }
+                notifyItemMoved(currentPosition, currentPosition + 1)
             }
         }
     }
 
-    inner class HeaderViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(data: Data) {
-            itemView.findViewById<TextView>(R.id.header).setOnClickListener {
-                onListItemClickListener.onItemClick(data)
+    inner class HeaderViewHolder(view: View) : BaseViewHolder(view) {
+        override fun bind(data: Pair<Data, Boolean>) {
+            itemView.findViewById<AppCompatTextView>(R.id.header).setOnClickListener {
+                onListItemClickListener.onItemClick(data.first)
             }
         }
     }
@@ -109,5 +155,10 @@ class SystemRecyclerAdapter(
         private const val TYPE_EARTH = 0
         private const val TYPE_MARS = 1
         private const val TYPE_HEADER = 2
+    }
+
+    abstract class BaseViewHolder(itemView: View) :
+        RecyclerView.ViewHolder(itemView) {
+        abstract fun bind(data: Pair<Data, Boolean>)
     }
 }

@@ -19,16 +19,10 @@ class SystemFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val data = arrayListOf(
-            Data("Earth"),
-            Data("Earth"),
-            Data("Mars", ""),
-            Data("Earth"),
-            Data("Earth"),
-            Data("Earth"),
-            Data("Mars", null)
+            Pair(Data("Mars", ""), false)
         )
-        data.add(0, Data("Header"))
-        binding.recyclerView.adapter = SystemRecyclerAdapter(
+        data.add(0, Pair(Data("Header"), false))
+        val adapter = SystemRecyclerAdapter(
             object : SystemRecyclerAdapter.OnListItemClickListener {
                 override fun onItemClick(data: Data) {
                     Toast.makeText(context, data.someText, Toast.LENGTH_SHORT).show()
@@ -36,12 +30,14 @@ class SystemFragment : Fragment() {
             },
             data
         )
+        binding.recyclerView.adapter = adapter
         binding.recyclerView.addItemDecoration(
             DividerItemDecoration(
                 context,
                 LinearLayoutManager.VERTICAL
             )
         )
+        binding.recyclerFAB.setOnClickListener { adapter.appendItem() }
     }
 
     override fun onCreateView(
