@@ -19,12 +19,14 @@ class ItemTouchHelperCallback(private val adapter: SystemRecyclerAdapter) :
         recyclerView: RecyclerView,
         viewHolder: RecyclerView.ViewHolder
     ): Int {
-        val dragFlags = ItemTouchHelper.UP or ItemTouchHelper.DOWN
-        val swipeFlags = ItemTouchHelper.START or ItemTouchHelper.END
-        return makeMovementFlags(
-            dragFlags,
-            swipeFlags
-        )
+        return if (viewHolder !is SystemRecyclerAdapter.HeaderViewHolder) {
+            val dragFlags = ItemTouchHelper.UP or ItemTouchHelper.DOWN
+            val swipeFlags = ItemTouchHelper.START or ItemTouchHelper.END
+            makeMovementFlags(
+                dragFlags,
+                swipeFlags
+            )
+        } else makeMovementFlags(0, 0)
     }
 
     override fun onMove(
@@ -74,7 +76,14 @@ class ItemTouchHelperCallback(private val adapter: SystemRecyclerAdapter) :
             val alpha = 1.0f - kotlin.math.abs(dX) / width
             viewHolder.itemView.alpha = alpha
             viewHolder.itemView.translationX = dX
-        }
-        super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+        } else super.onChildDraw(
+            c,
+            recyclerView,
+            viewHolder,
+            dX,
+            dY,
+            actionState,
+            isCurrentlyActive
+        )
     }
 }

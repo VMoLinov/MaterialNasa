@@ -64,10 +64,7 @@ class SystemRecyclerAdapter(
 
     override fun onItemMove(fromPosition: Int, toPosition: Int) {
         data.removeAt(fromPosition).apply {
-            data.add(
-                if (toPosition > fromPosition) toPosition - 1 else
-                    toPosition, this
-            )
+            data.add(toPosition, this)
         }
         notifyItemMoved(fromPosition, toPosition)
     }
@@ -101,21 +98,12 @@ class SystemRecyclerAdapter(
     inner class MarsViewHolder(view: View) : BaseViewHolder(view) {
         override fun bind(data: Pair<Data, Boolean>) {
             super.bind(data)
-            itemView.findViewById<AppCompatImageView>(R.id.marsImageView).setOnClickListener {
-                onListItemClickListener.onItemClick(data.first)
-            }
-            itemView.findViewById<AppCompatImageView>(R.id.addItemImageView).setOnClickListener {
-                addItem()
-            }
-            itemView.findViewById<AppCompatImageView>(R.id.removeItemImageView).setOnClickListener {
-                removeItem()
-            }
-            itemView.findViewById<AppCompatImageView>(R.id.moveItemUp).setOnClickListener {
-                moveUp()
-            }
-            itemView.findViewById<AppCompatImageView>(R.id.moveItemDown).setOnClickListener {
-                moveDown()
-            }
+            itemView.findViewById<AppCompatImageView>(R.id.marsImageView)
+                .setOnClickListener { onListItemClickListener.onItemClick(data.first) }
+            itemView.findViewById<AppCompatImageView>(R.id.addItemImageView)
+                .setOnClickListener { addItem() }
+            itemView.findViewById<AppCompatImageView>(R.id.removeItemImageView)
+                .setOnClickListener { removeItem() }
             itemView.findViewById<AppCompatTextView>(R.id.marsDescriptionTextView).visibility =
                 if (data.second) View.VISIBLE else View.GONE
             itemView.findViewById<AppCompatTextView>(R.id.marsTextView).setOnClickListener {
@@ -140,6 +128,35 @@ class SystemRecyclerAdapter(
             notifyItemRemoved(layoutPosition)
         }
 
+
+    }
+
+    inner class HeaderViewHolder(view: View) : BaseViewHolder(view) {
+        override fun bind(data: Pair<Data, Boolean>) {
+            itemView.findViewById<AppCompatTextView>(R.id.header).setOnClickListener {
+                onListItemClickListener.onItemClick(data.first)
+            }
+        }
+    }
+
+    abstract inner class BaseViewHolder(itemView: View) :
+        RecyclerView.ViewHolder(itemView), ItemTouchHelperViewHolder {
+
+        @SuppressLint("ClickableViewAccessibility")
+        open fun bind(data: Pair<Data, Boolean>) {
+            itemView.findViewById<AppCompatImageView>(R.id.dragHandleImageView)
+                .setOnTouchListener { _, event ->
+                    if (event.action == MotionEvent.ACTION_DOWN || event.action == MotionEvent.ACTION_UP) {
+                        dragListener.onStartDrag(this)
+                    }
+                    false
+                }
+            itemView.findViewById<AppCompatImageView>(R.id.moveItemUp)
+                .setOnClickListener { moveUp() }
+            itemView.findViewById<AppCompatImageView>(R.id.moveItemDown)
+                .setOnClickListener { moveDown() }
+        }
+
         private fun moveUp() {
             layoutPosition.takeIf { it > 1 }?.also { currentPosition ->
                 data.removeAt(currentPosition).apply {
@@ -157,34 +174,6 @@ class SystemRecyclerAdapter(
                 notifyItemMoved(currentPosition, currentPosition + 1)
             }
         }
-    }
-
-    inner class HeaderViewHolder(view: View) : BaseViewHolder(view) {
-        override fun bind(data: Pair<Data, Boolean>) {
-            itemView.findViewById<AppCompatTextView>(R.id.header).setOnClickListener {
-                onListItemClickListener.onItemClick(data.first)
-            }
-        }
-    }
-
-    companion object {
-        private const val TYPE_EARTH = 0
-        private const val TYPE_MARS = 1
-    }
-
-    abstract inner class BaseViewHolder(itemView: View) :
-        RecyclerView.ViewHolder(itemView), ItemTouchHelperViewHolder {
-
-        @SuppressLint("ClickableViewAccessibility")
-        open fun bind(data: Pair<Data, Boolean>) {
-            itemView.findViewById<AppCompatImageView>(R.id.dragHandleImageView)
-                .setOnTouchListener { _, event ->
-                    if (event.action == MotionEvent.ACTION_DOWN || event.action == MotionEvent.ACTION_UP) {
-                        dragListener.onStartDrag(this)
-                    }
-                    true
-                }
-        }
 
         override fun onItemSelected() {
             itemView.setBackgroundColor(Color.LTGRAY)
@@ -193,5 +182,10 @@ class SystemRecyclerAdapter(
         override fun onItemClear() {
             itemView.setBackgroundColor(Color.WHITE)
         }
+    }
+
+    companion object {
+        private const val TYPE_EARTH = 0
+        private const val TYPE_MARS = 1
     }
 }

@@ -8,27 +8,27 @@
         android:id="@+id/earthImageView"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/earthTextView"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/bg_earth" />
 
     <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/earthTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Земля"
+        android:text="@string/earth"
         android:textSize="35sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/earthImageView"
-        app:layout_constraintEnd_toStartOf="@+id/earthImageView"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/earthImageView" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/wikiImageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        app:layout_constraintEnd_toStartOf="@id/dragHandleImageView"
+        app:layout_constraintEnd_toEndOf="@id/moveItemDown"
+        app:layout_constraintStart_toStartOf="@id/moveItemUp"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_wikipedia" />
 
@@ -36,13 +36,36 @@
         android:id="@+id/descriptionTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Дополнительный текст"
+        android:text="@string/extract_text"
         android:textColor="#000"
         android:textSize="15sp"
-        app:layout_constraintBottom_toBottomOf="@+id/earthImageView"
-        app:layout_constraintEnd_toStartOf="@+id/wikiImageView"
-        app:layout_constraintStart_toEndOf="@+id/earthImageView"
-        app:layout_constraintTop_toTopOf="@+id/earthImageView" />
+        app:layout_constraintBottom_toBottomOf="@id/earthImageView"
+        app:layout_constraintEnd_toStartOf="@id/guideline"
+        app:layout_constraintStart_toEndOf="@id/earthImageView"
+        app:layout_constraintTop_toTopOf="@id/earthImageView" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/moveItemUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:tint="@color/design_default_color_error"
+        app:layout_constraintBottom_toBottomOf="@id/earthTextView"
+        app:layout_constraintStart_toEndOf="@id/guideline"
+        app:layout_constraintTop_toTopOf="@id/earthTextView"
+        app:srcCompat="@android:drawable/arrow_up_float" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/moveItemDown"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:tint="@color/design_default_color_error"
+        app:layout_constraintBottom_toBottomOf="@id/earthTextView"
+        app:layout_constraintEnd_toStartOf="@id/dragHandleImageView"
+        app:layout_constraintStart_toEndOf="@id/moveItemUp"
+        app:layout_constraintTop_toTopOf="@id/earthTextView"
+        app:srcCompat="@android:drawable/arrow_down_float" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/dragHandleImageView"
@@ -54,4 +77,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/descriptionTextView"
         app:srcCompat="@drawable/ic_hamburger_menu_bottom_bar" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.7" />
 </androidx.constraintlayout.widget.ConstraintLayout>

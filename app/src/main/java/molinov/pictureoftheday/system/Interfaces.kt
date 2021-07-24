@@ -1,6 +1,5 @@
 package molinov.pictureoftheday.system
 
-import androidx.recyclerview.widget.RecyclerView
 import molinov.pictureoftheday.picture.Data
 
 interface OnListItemClickListener {
@@ -8,7 +7,7 @@ interface OnListItemClickListener {
 }
 
 interface OnStartDragListener {
-    fun onStartDrag(viewHolder: RecyclerView.ViewHolder)
+    fun onStartDrag(viewHolder: SystemRecyclerAdapter.BaseViewHolder)
 }
 
 interface ItemTouchHelperAdapter {
