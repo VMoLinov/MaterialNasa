@@ -5,7 +5,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import molinov.pictureoftheday.R
@@ -20,9 +19,6 @@ class PictureOfTheDayFragment : Fragment() {
 
     private var _binding: MainFragmentBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: PictureOfTheDayViewModel by lazy {
-        ViewModelProvider(this).get(PictureOfTheDayViewModel::class.java)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -73,7 +69,6 @@ class PictureOfTheDayFragment : Fragment() {
     }
 
     companion object {
-        private var isMain = true
         fun newInstance() = PictureOfTheDayFragment()
     }
 }
