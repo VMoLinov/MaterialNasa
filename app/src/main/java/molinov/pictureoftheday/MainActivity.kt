@@ -9,6 +9,7 @@ import molinov.pictureoftheday.earth.EarthFragment
 import molinov.pictureoftheday.mars.MarsFragment
 import molinov.pictureoftheday.picture.PictureOfTheDayFragment
 import molinov.pictureoftheday.settings.SettingsFragment
+import molinov.pictureoftheday.system.SystemFragment
 import molinov.pictureoftheday.util.THEME
 import molinov.pictureoftheday.util.THEME_INT
 
@@ -57,7 +58,11 @@ class MainActivity : AppCompatActivity() {
                         .commit()
                     true
                 }
-                R.id.bottom_view_weather -> {
+                R.id.bottom_view_system -> {
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.container, SystemFragment.newInstance())
+                        .addToBackStack(null)
+                        .commit()
                     true
                 }
                 R.id.bottom_view_main -> {

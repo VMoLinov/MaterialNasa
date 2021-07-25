@@ -49,6 +49,12 @@ class PODRetrofitImpl {
     }
 }
 
+data class Data(
+    val type: Int,
+    val someText: String,
+    val someDescription: String?
+)
+
 data class EarthServerResponseData(
     @field:SerializedName("image") val image: String,
     @field:SerializedName("date") val date: String,
