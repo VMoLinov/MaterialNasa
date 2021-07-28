@@ -10,8 +10,7 @@ import molinov.pictureoftheday.mars.MarsFragment
 import molinov.pictureoftheday.picture.PictureOfTheDayFragment
 import molinov.pictureoftheday.settings.SettingsFragment
 import molinov.pictureoftheday.system.SystemFragment
-import molinov.pictureoftheday.util.THEME
-import molinov.pictureoftheday.util.THEME_INT
+import molinov.pictureoftheday.util.getActualTheme
 
 class MainActivity : AppCompatActivity() {
 
@@ -19,8 +18,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setTheme(shared())
         binding = MainActivityBinding.inflate(layoutInflater)
+        setTheme(getActualTheme(this))
         setContentView(binding.root)
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
@@ -75,10 +74,5 @@ class MainActivity : AppCompatActivity() {
                 else -> false
             }
         }
-    }
-
-    private fun shared(): Int {
-        val theme = getSharedPreferences(THEME, MODE_PRIVATE)
-        return theme.getInt(THEME_INT, R.style.App_POD1)
     }
 }
